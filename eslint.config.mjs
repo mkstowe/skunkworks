@@ -25,6 +25,7 @@ export default [
               onlyDependOnLibsWithTags: ['*'],
             },
           ],
+          '@typescript-eslint/no-explicit-any': 'off',
         },
       ],
     },
