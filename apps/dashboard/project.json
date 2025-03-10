@@ -59,6 +59,7 @@
           "buildTarget": "dashboard:build:development"
         }
       },
+      "options": { "watch": true},
       "defaultConfiguration": "development"
     },
     "extract-i18n": {
@@ -85,6 +86,15 @@
         "staticFilePath": "dist/apps/dashboard/browser",
         "spa": true
       }
+    },
+    "temp": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "echo 'test'"
+      }
     }
+  },
+  "generators": {
+    "@nx/angular:component": {}
   }
 }

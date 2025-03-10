@@ -1,92 +1,69 @@
 import {
-  createConnection,
-  subscribeEntities,
-  HassEntities,
   Auth,
+  Connection,
+  HassEntities,
+  MessageBase,
+  createConnection,
   createLongLivedTokenAuth,
+  subscribeEntities,
 } from 'home-assistant-js-websocket';
-import { WebSocket } from 'ws';
+import { WSContext } from 'hono/ws';
+import { ServiceCall } from '../models/Hass';
 
-global.WebSocket = WebSocket as any; // Required for Node.js since WebSocket is not available in the global scope
-
-interface HomeAssistantConfig {
-  url: string;
-  accessToken: string;
-}
-
-export class HomeAssistantService {
-  private config: HomeAssistantConfig;
-  private connection: any | null = null;
+class HomeAssistantService {
+  private _connection: Connection | null = null;
+  private _auth: Auth | null = null;
   private entityCache: HassEntities = {};
+  private subscribers: Set<WebSocket | WSContext> = new Set(); // Track connected WebSockets
 
-  constructor(config: HomeAssistantConfig) {
-    this.config = config;
+  constructor(url: string, accessToken: string) {
+    this._auth = createLongLivedTokenAuth(url, accessToken);
+    this.connect();
   }
 
-  async connect() {
-    if (this.connection) {
-      console.log('Already connected to Home Assistant');
-      return;
-    }
+  public subscribe(client: WSContext) {
+    this.subscribers.add(client);
 
-    try {
-      console.log('Connecting to Home Assistant WebSocket API...');
-      const auth = createLongLivedTokenAuth(
-        this.config.url,
-        this.config.accessToken
-      );
-
-      this.connection = await createConnection({
-        auth,
-      });
-
-      console.log('Connected to Home Assistant');
-
-      // Subscribe to entity state changes
-      subscribeEntities(this.connection, (entities) => {
-        this.entityCache = entities;
-        console.log('Entity cache updated:', Object.keys(entities));
-      });
-    } catch (error) {
-      console.error('Failed to connect to Home Assistant:', error);
-    }
+    client.send(JSON.stringify(this.entityCache));
   }
 
-  getEntities() {
-    return this.entityCache;
+  public unsubscribe(client: WSContext) {
+    this.subscribers.delete(client);
   }
 
-  getEntityState(entityId: string) {
+  private async connect() {
+    if (this._connection || !this._auth) return;
+
+    this._connection = await createConnection({ auth: this._auth });
+
+    subscribeEntities(this._connection, (entities) => {
+      this.entityCache = entities;
+      this.broadcastEntities(entities);
+    });
+
+    return this._connection;
+  }
+
+  public getEntityState(entityId: string) {
     return this.entityCache[entityId] || null;
   }
 
-  async callService(
-    domain: string,
-    service: string,
-    entityId: string,
-    data: Record<string, any> = {}
-  ) {
-    if (!this.connection) {
-      console.error('Not connected to Home Assistant');
-      return;
-    }
+  public callService(service: ServiceCall) {
+    this._connection?.sendMessage(service as MessageBase);
+  }
 
-    try {
-      await this.connection.sendMessagePromise({
-        type: 'call_service',
-        domain,
-        service,
-        service_data: {
-          entity_id: entityId,
-          ...data,
-        },
-      });
+  private broadcastEntities(entities: HassEntities) {
+    const data = JSON.stringify(entities);
 
-      console.log(
-        `Successfully called service: ${domain}.${service} on ${entityId}`
-      );
-    } catch (error) {
-      console.error('Failed to call service:', error);
-    }
+    this.subscribers.forEach((client) => {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(data);
+      } else {
+        this.subscribers.delete(client); // Remove closed connections
+      }
+    });
   }
 }
+
+// export const homeAssistant = new HomeAssistantService();
+export { HomeAssistantService };

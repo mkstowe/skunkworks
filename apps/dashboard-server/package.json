@@ -2,6 +2,7 @@
   "name": "dashboard-server",
   "scripts": {
     "dev": "bun run --hot src/index.ts",
+    "testing": "bun src/index.ts",
     "db:generate:types": "kanel",
     "db:seed": "tsx -r dotenv/config ./src/db/seed",
     "db:reset": "bun run db:migrate:redo && bun run db:seed",
@@ -27,7 +28,6 @@
     "@types/pg": "^8.11.11",
     "@types/uuid": "^10.0.0",
     "@types/ws": "^8.18.0",
-    "dotenv": "^16.4.7",
     "kanel": "^3.11.1",
     "kanel-kysely": "^0.6.1",
     "tsx": "^4.19.3",
