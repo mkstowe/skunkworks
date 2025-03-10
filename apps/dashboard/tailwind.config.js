@@ -19,7 +19,7 @@ module.exports = {
       '3xl': '2900px',
     },
   },
-  // plugins: [require('daisyui')],
+  plugins: [require('daisyui')],
 
   daisyui: {
     themes: [
