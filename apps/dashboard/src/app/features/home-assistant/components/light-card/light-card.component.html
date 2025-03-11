@@ -1,0 +1,24 @@
+<div class="bg-background flex gap-4 p-3 items-center h-full">
+    @if(entity.icon) {
+    <div class="icon"></div>
+    }
+  
+    <div class="flex w-full flex-col items-center gap-4">
+      <div
+        class="info text-lg font-bold w-full flex justify-between items-center"
+      >
+        <div class="name">{{ entity.name }}</div>
+        <div class="brightness">{{ brightness }}</div>
+      </div>
+      <app-progress-bar
+        [min]="0"
+        [max]="100"
+        [value]="brightness"
+        [step]="5"
+        dotSize="xl"
+        dotSpacing="md"
+        color="accent"
+        (valueChange)="onBrightnessChange($event)"
+      ></app-progress-bar>
+    </div>
+  </div>
