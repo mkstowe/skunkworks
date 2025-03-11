@@ -20,7 +20,8 @@
           {
             "glob": "**/*",
             "input": "apps/dashboard/public"
-          }
+          },
+          "apps/dashboard/src/assets"
         ],
         "styles": ["apps/dashboard/src/styles.scss"],
         "scripts": []

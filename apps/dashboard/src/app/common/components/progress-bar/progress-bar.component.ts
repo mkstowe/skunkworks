@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { colors } from '../../models/Colors';
 
 @Component({
   selector: 'app-progress-bar',
@@ -12,7 +13,7 @@ export class ProgressBarComponent implements OnInit {
   @Input() max = 100;
   @Input() value = 0;
   @Input() step = 5;
-  @Input() color = 'accent';
+  @Input() color: colors = 'accent';
   @Input() dotSize: 'xs' | 'sm' | 'md' | 'lg' | 'xl' = 'xl';
   @Input() dotSpacing: 'xs' | 'sm' | 'md' | 'lg' | 'xl' = 'md';
 

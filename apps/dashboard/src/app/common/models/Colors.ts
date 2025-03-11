@@ -1,0 +1,11 @@
+export type colors =
+  | 'basic'
+  | 'primary'
+  | 'secondary'
+  | 'error'
+  | 'accent'
+  | 'neutral'
+  | 'warning'
+  | 'success'
+  | 'info'
+  | 'transparent'

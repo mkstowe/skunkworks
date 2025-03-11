@@ -1,0 +1,19 @@
+{
+  "name": "dashboard-server",
+  "targets": {
+    "serve": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "bun dev",
+        "cwd": "apps/dashboard-server"
+      }
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "bun build",
+        "cwd": "apps/dashboard-server"
+      }
+    }
+  }
+}

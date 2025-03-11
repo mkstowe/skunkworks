@@ -1,1 +1,7 @@
-<p>icon works!</p>
+<div
+  class="icon-svg {{ color }} {{ 'active-' + colorActive }} {{
+    'size-' + size
+  }}"
+  [class.active]="active"
+  [innerHTML]="svg"
+></div>

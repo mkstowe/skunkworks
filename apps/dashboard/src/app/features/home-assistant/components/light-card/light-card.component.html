@@ -1,24 +1,41 @@
-<div class="bg-background flex gap-4 p-3 items-center h-full">
-    @if(entity.icon) {
-    <div class="icon"></div>
-    }
-  
-    <div class="flex w-full flex-col items-center gap-4">
-      <div
-        class="info text-lg font-bold w-full flex justify-between items-center"
-      >
-        <div class="name">{{ entity.name }}</div>
-        <div class="brightness">{{ brightness }}</div>
-      </div>
-      <app-progress-bar
-        [min]="0"
-        [max]="100"
-        [value]="brightness"
-        [step]="5"
-        dotSize="xl"
-        dotSpacing="md"
-        color="accent"
-        (valueChange)="onBrightnessChange($event)"
-      ></app-progress-bar>
+@if (entity) {
+<div class="bg-background flex gap-8 p-3 items-center h-full">
+  @if(icon) {
+  <button
+    [class.active]="active"
+    [class.bg-light]="active"
+    class="btn bg-dark w-18 h-18 rounded-2xl border-2 border-light"
+  >
+    <div class="icon w-full h-full">
+      <app-icon
+        [name]="icon"
+        color="basic"
+        colorActive="primary"
+        [active]="active"
+      ></app-icon>
     </div>
+  </button>
+  }
+
+  <div class="flex w-full flex-col items-center gap-4 mt-2">
+    <div
+      class="info text-lg font-bold w-full flex justify-between items-center px-2"
+    >
+      <div class="name">
+        {{ name || entity.attributes['friendly_name'] || '' }}
+      </div>
+      <div class="brightness">{{ brightness }}</div>
+    </div>
+    <app-progress-bar
+      [min]="0"
+      [max]="100"
+      [value]="brightness"
+      [step]="5"
+      dotSize="xl"
+      dotSpacing="md"
+      color="accent"
+      (valueChange)="onBrightnessChange($event)"
+    ></app-progress-bar>
   </div>
+</div>
+}

@@ -1,7 +1,8 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable, retry, shareReplay } from 'rxjs';
 import { ServiceCall } from '../models/ServiceCall';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HassEntity } from '../models/Entity';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -33,7 +34,9 @@ export class HassService implements OnDestroy {
   }
 
   public getEntity(entity: string) {
-    return this.http.get<any>(`http://localhost:3000/hass/entity/${entity}`);
+    return this.http.get<HassEntity>(
+      `http://localhost:3000/hass/entity/${entity}`
+    );
   }
 
   public callService(service: ServiceCall) {
