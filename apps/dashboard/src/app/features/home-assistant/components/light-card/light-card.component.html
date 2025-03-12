@@ -4,7 +4,9 @@
   <button
     [class.active]="active"
     [class.bg-light]="active"
+    [class.bg-dark]="!active"
     class="btn bg-dark w-18 h-18 rounded-2xl border-2 border-light"
+    (click)="toggleState()"
   >
     <div class="icon w-full h-full">
       <app-icon
@@ -24,16 +26,19 @@
       <div class="name">
         {{ name || entity.attributes['friendly_name'] || '' }}
       </div>
-      <div class="brightness">{{ brightness }}</div>
+      <div class="brightness">
+        {{ valueAsPercentage(brightness || 0) + '%' }}
+      </div>
     </div>
     <app-progress-bar
       [min]="0"
-      [max]="100"
-      [value]="brightness"
-      [step]="5"
+      [max]="255"
+      [value]="brightness || 0"
+      [step]="255 / 20"
       dotSize="xl"
       dotSpacing="md"
       color="accent"
+      [update$]="valueChangeSubject$"
       (valueChange)="onBrightnessChange($event)"
     ></app-progress-bar>
   </div>

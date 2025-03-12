@@ -1,9 +1,9 @@
 import type { ServerWebSocket } from 'bun';
 import { Hono } from 'hono';
 import { createBunWebSocket } from 'hono/bun';
-import { HomeAssistantService } from '../services/hass-service';
-import { ServiceCall } from '../models/Hass';
 import { cors } from 'hono/cors';
+import { ServiceCall } from '../models/Hass';
+import { HomeAssistantService } from '../services/hass-service';
 
 const { upgradeWebSocket, websocket } = createBunWebSocket<ServerWebSocket>();
 
@@ -58,7 +58,7 @@ hass.post('/entity/service', async (c) => {
   const body: ServiceCall = await c.req.json();
   hassService.callService(body);
 
-  return c.status(200);
+  return c.json({ entity: body.target.entity_id }, 200);
 });
 
 export { hass, websocket };

@@ -2,7 +2,7 @@
   <div class="relative mx-2 my-4">
     <div [style.gap]="dotGap" class="flex text-zinc-600">
       @for (dot of dots; track dot) {
-      <div class="tooltip" [attr.data-tip]="dot">
+      <div class="tooltip" [attr.data-tip]="valueAsPercentage(dot)">
         <div
           tabindex="{0}"
           [style.width]="dotPixels + 'px'"

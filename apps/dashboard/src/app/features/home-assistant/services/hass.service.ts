@@ -1,8 +1,7 @@
-import { Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject, Observable, retry, shareReplay } from 'rxjs';
-import { ServiceCall } from '../models/ServiceCall';
-import { HassEntity } from '../models/Entity';
 import { HttpClient } from '@angular/common/http';
+import { Injectable, OnDestroy } from '@angular/core';
+import { BehaviorSubject, retry, shareReplay } from 'rxjs';
+import { ServiceCall } from '../models/ServiceCall';
 
 @Injectable({
   providedIn: 'root',
@@ -14,9 +13,18 @@ export class HassService implements OnDestroy {
   private isConnected = false;
   private entityState$ = new BehaviorSubject<Record<string, any>>({});
   private entities$ = new BehaviorSubject({});
+  private _refresh$ = new BehaviorSubject<null>(null);
 
   constructor(private http: HttpClient) {
     this.connectWebsocket();
+  }
+
+  public refresh() {
+    this._refresh$.next(null);
+  }
+
+  public get refetch$() {
+    return this._refresh$.asObservable();
   }
 
   public get entities() {
@@ -26,32 +34,19 @@ export class HassService implements OnDestroy {
     );
   }
 
-  public getEntities(): Observable<any> {
-    return this.entities$.asObservable().pipe(
-      retry(3), // Retry if error occurs
-      shareReplay(1) // Cache latest value
-    );
-  }
-
-  public getEntity(entity: string) {
-    return this.http.get<HassEntity>(
-      `http://localhost:3000/hass/entity/${entity}`
-    );
-  }
-
   public callService(service: ServiceCall) {
-    return this.http.post(`http://localhost:3000/hass/entity/service`, {
-      ...service,
-      type: 'call_service',
-    });
+    service.type = 'call_service';
+    return this.http.post(`http://localhost:3000/hass/entity/service`, service);
   }
 
-  public sendMessage(message: string) {
-    if (this.isConnected && this.socket.readyState === WebSocket.OPEN) {
-      this.socket.send(message);
-    } else {
-      console.warn('⚠️ WebSocket is not connected.');
-    }
+  public toggleState(domain: string, entity: string) {
+    return this.callService({
+      domain,
+      service: 'toggle',
+      target: {
+        entity_id: entity,
+      },
+    });
   }
 
   private connectWebsocket() {

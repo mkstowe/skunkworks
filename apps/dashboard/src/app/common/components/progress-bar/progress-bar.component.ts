@@ -1,5 +1,13 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
+import { Subject } from 'rxjs';
 import { colors } from '../../models/Colors';
 
 @Component({
@@ -16,18 +24,22 @@ export class ProgressBarComponent implements OnInit {
   @Input() color: colors = 'accent';
   @Input() dotSize: 'xs' | 'sm' | 'md' | 'lg' | 'xl' = 'xl';
   @Input() dotSpacing: 'xs' | 'sm' | 'md' | 'lg' | 'xl' = 'md';
+  @Input() update$ = new Subject();
 
   @Output() valueChange = new EventEmitter<number>();
   public nextVal = 0;
 
-  public dots = Array.from(
-    { length: Math.floor(this.max / this.step) },
-    (_, i) => i * this.step + this.step
-  );
+  public dots: number[] = [];
   public dotPixels = 0;
   public dotGap = '0';
 
+  constructor(private cd: ChangeDetectorRef) {}
+
   ngOnInit(): void {
+    this.dots = Array.from(
+      { length: Math.floor(this.max / this.step) },
+      (_, i) => i * this.step + this.step
+    );
     switch (this.dotSize) {
       case 'xs':
         this.dotPixels = 6;
@@ -64,11 +76,18 @@ export class ProgressBarComponent implements OnInit {
         break;
     }
 
-    this.nextVal = this.value;
+    this.nextVal = this.valueAsPercentage(this.value);
+    this.update$.subscribe(() => {
+      this.nextVal = this.valueAsPercentage(this.value);
+    });
   }
 
   public onDotClick(value: number) {
-    this.nextVal = value;
+    this.nextVal = this.valueAsPercentage(value);
     this.valueChange.emit(value);
+  }
+
+  public valueAsPercentage(value: number) {
+    return Math.round((value / this.max) * 100);
   }
 }
