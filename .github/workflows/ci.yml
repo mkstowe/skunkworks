@@ -25,20 +25,19 @@ jobs:
           curl -fsSL https://bun.sh/install | bash
           echo "$HOME/.bun/bin" >> $GITHUB_PATH
 
-      # 3️⃣ Cache Bun Dependencies
-      - name: Cache Bun Dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.bun/install/cache
-          key: bun-${{ runner.os }}-${{ hashFiles('**/bun.lockb') }}
-          restore-keys: |
-            bun-${{ runner.os }}-
+      # 3️⃣ Upgrade Bun (Ensure Latest Version)
+      - name: Upgrade Bun
+        run: bun upgrade
 
-      # 4️⃣ Install Dependencies with Bun
-      - run: bun install --frozen-lockfile
+      # 4️⃣ Clear Bun Cache to Fix SIGBUS
+      - name: Clean Bun Cache
+        run: rm -rf ~/.bun/install/cache
 
-      # 5️⃣ Set Nx SHAs (Optimize Affected Commands)
+      # 5️⃣ Install Dependencies with Bun (Disable Postinstall)
+      - run: BUN_NO_POSTINSTALL=1 bun install --frozen-lockfile
+
+      # 6️⃣ Set Nx SHAs (Optimize Affected Commands)
       - uses: nrwl/nx-set-shas@v4
 
-      # 6️⃣ Run Nx Affected Commands with Bun
+      # 7️⃣ Run Nx Affected Commands with Bun
       - run: bunx nx affected -t lint test build
