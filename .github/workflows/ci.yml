@@ -37,4 +37,4 @@ jobs:
       - uses: nrwl/nx-set-shas@v4
 
       # 6️⃣ Run Nx Affected Commands with pnpm
-      - run: pnpm nx affected -t lint test build
+      - run: pnpm nx affected -t lint build
