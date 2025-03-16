@@ -19,41 +19,25 @@ jobs:
         with:
           fetch-depth: 0
 
-      # 2️⃣ Set Up Node.js (Yarn)
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'yarn'
-
-      # 3️⃣ Install Yarn Dependencies
-      - run: yarn install --immutable
-
-      # 4️⃣ Set Up Bun
+      # 2️⃣ Install Bun
       - name: Install Bun
         run: |
           curl -fsSL https://bun.sh/install | bash
           echo "$HOME/.bun/bin" >> $GITHUB_PATH
 
-      # 5️⃣ Cache Bun Dependencies
-      - name: Cache Bun Dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.bun/install/cache
-          key: bun-${{ runner.os }}-${{ hashFiles('**/bun.lockb') }}
-          restore-keys: |
-            bun-${{ runner.os }}-
+      # 3️⃣ Upgrade Bun (Ensure Latest Version)
+      - name: Upgrade Bun
+        run: bun upgrade
 
-      # 6️⃣ Install Bun Dependencies (for Bun-based projects)
-      - run: bun install
-        if: hashFiles('**/bun.lockb') != ''
+      # 4️⃣ Clear Bun Cache (Fix SIGBUS)
+      - name: Clean Bun Cache
+        run: rm -rf ~/.bun/install/cache
 
-      # 7️⃣ Set Nx SHAs (Optimize Affected Commands)
+      # 5️⃣ Install Dependencies (No Postinstall)
+      - run: BUN_NO_POSTINSTALL=1 bun install --no-save
+
+      # 6️⃣ Set Nx SHAs (Optimize Affected Commands)
       - uses: nrwl/nx-set-shas@v4
 
-      # 8️⃣ Run Nx Affected Commands with Yarn
-      - run: yarn nx affected -t lint test build
-
-      # 9️⃣ Run Bun API Project (if exists)
-      - name: Run Bun API Tests
-        run: bun run test
-        if: hashFiles('**/bun.lockb') != ''
+      # 7️⃣ Run Nx Affected Commands with Bun (Skipping Cache)
+      - run: NX_SKIP_NX_CACHE=1 bunx nx affected -t lint test build
