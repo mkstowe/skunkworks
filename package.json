@@ -4,10 +4,6 @@
   "license": "MIT",
   "scripts": {},
   "private": true,
-  "workspaces": [
-    "apps/*",
-    "libs/*"
-  ],
   "devDependencies": {
     "@analogjs/vite-plugin-angular": "~1.10.0",
     "@analogjs/vitest-angular": "~1.10.0",
@@ -20,6 +16,7 @@
     "@eslint/js": "^9.8.0",
     "@nx/angular": "^20.5.0",
     "@nx/devkit": "20.5.0",
+    "@nx/esbuild": "20.5.0",
     "@nx/eslint": "20.5.0",
     "@nx/eslint-plugin": "^20.5.0",
     "@nx/js": "20.5.0",
@@ -43,6 +40,7 @@
     "angular-eslint": "^19.2.0",
     "autoprefixer": "^10.4.21",
     "daisyui": "^5.0.0",
+    "esbuild": "^0.19.2",
     "eslint": "^9.21.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-playwright": "^1.6.2",
@@ -70,9 +68,5 @@
     "ngx-color": "^10.0.0",
     "rxjs": "~7.8.0",
     "zone.js": "~0.15.0"
-  },
-  "trustedDependencies": [
-    "@parcel/watcher",
-    "@swc/core"
-  ]
+  }
 }

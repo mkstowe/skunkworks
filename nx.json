@@ -28,8 +28,18 @@
         "{workspaceRoot}/eslint.config.mjs"
       ]
     },
-    "@nx/vite:test": { "cache": true, "inputs": ["default", "^production"] },
-    "e2e-ci--**/*": { "dependsOn": ["^build"] }
+    "@nx/vite:test": {
+      "cache": true,
+      "inputs": ["default", "^production"]
+    },
+    "e2e-ci--**/*": {
+      "dependsOn": ["^build"]
+    },
+    "@nx/esbuild:esbuild": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
+    }
   },
   "plugins": [
     {

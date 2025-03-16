@@ -1,18 +1,57 @@
 {
   "name": "dashboard-server",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/dashboard-server/src",
+  "projectType": "application",
+  "tags": [],
   "targets": {
-    "serve": {
-      "executor": "nx:run-commands",
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
       "options": {
-        "command": "bun dev",
-        "cwd": "apps/dashboard-server"
+        "platform": "node",
+        "outputPath": "dist/apps/dashboard-server",
+        "format": ["cjs"],
+        "bundle": false,
+        "main": "apps/dashboard-server/src/main.ts",
+        "tsConfig": "apps/dashboard-server/tsconfig.app.json",
+        "assets": ["apps/dashboard-server/src/assets"],
+        "generatePackageJson": true,
+        "esbuildOptions": {
+          "sourcemap": true,
+          "outExtension": {
+            ".js": ".js"
+          }
+        }
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "esbuildOptions": {
+            "sourcemap": false,
+            "outExtension": {
+              ".js": ".js"
+            }
+          }
+        }
       }
     },
-    "build": {
-      "executor": "nx:run-commands",
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "dependsOn": ["build"],
       "options": {
-        "command": "bun build",
-        "cwd": "apps/dashboard-server"
+        "buildTarget": "dashboard-server:build",
+        "runBuildTargetDependencies": false
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "dashboard-server:build:development"
+        },
+        "production": {
+          "buildTarget": "dashboard-server:build:production"
+        }
       }
     }
   }
