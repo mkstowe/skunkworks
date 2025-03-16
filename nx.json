@@ -12,7 +12,7 @@
     ],
     "sharedGlobals": ["{workspaceRoot}/.github/workflows/ci.yml"]
   },
-  "nxCloudId": "67ca4e2e4ea680676321dad9",
+  "nxCloudId": "67d72189bccb868e9e716662",
   "targetDefaults": {
     "@angular-devkit/build-angular:application": {
       "cache": true,
@@ -28,13 +28,8 @@
         "{workspaceRoot}/eslint.config.mjs"
       ]
     },
-    "@nx/vite:test": {
-      "cache": true,
-      "inputs": ["default", "^production"]
-    },
-    "e2e-ci--**/*": {
-      "dependsOn": ["^build"]
-    }
+    "@nx/vite:test": { "cache": true, "inputs": ["default", "^production"] },
+    "e2e-ci--**/*": { "dependsOn": ["^build"] }
   },
   "plugins": [
     {
