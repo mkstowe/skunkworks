@@ -19,25 +19,22 @@ jobs:
         with:
           fetch-depth: 0
 
-      # 2️⃣ Install Bun
-      - name: Install Bun
-        run: |
-          curl -fsSL https://bun.sh/install | bash
-          echo "$HOME/.bun/bin" >> $GITHUB_PATH
+      # 2️⃣ Setup pnpm (Recommended Way)
+      - uses: pnpm/action-setup@v4
+        with:
+          version: latest
 
-      # 3️⃣ Upgrade Bun (Ensure Latest Version)
-      - name: Upgrade Bun
-        run: bun upgrade
+      # 3️⃣ Setup Node.js with pnpm Caching
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
 
-      # 4️⃣ Clear Bun Cache (Fix SIGBUS)
-      - name: Clean Bun Cache
-        run: rm -rf ~/.bun/install/cache
+      # 4️⃣ Install Dependencies with pnpm
+      - run: pnpm install --frozen-lockfile
 
-      # 5️⃣ Install Dependencies (No Postinstall)
-      - run: BUN_NO_POSTINSTALL=1 bun install --no-save
-
-      # 6️⃣ Set Nx SHAs (Optimize Affected Commands)
+      # 5️⃣ Set Nx SHAs (Optimize Affected Commands)
       - uses: nrwl/nx-set-shas@v4
 
-      # 7️⃣ Run Nx Affected Commands with Bun (Skipping Cache)
-      - run: NX_SKIP_NX_CACHE=1 bunx nx affected -t lint test build
+      # 6️⃣ Run Nx Affected Commands with pnpm
+      - run: pnpm nx affected -t lint build
