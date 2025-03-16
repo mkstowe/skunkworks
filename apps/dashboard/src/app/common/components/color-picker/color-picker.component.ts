@@ -18,13 +18,36 @@ import { ColorCircleModule } from 'ngx-color/circle';
 })
 export class ColorPickerComponent {
   @Input() colors = ['#FFD8A8', '#D9E2F1', '#7AAFFF', '#FF9F43', '#C678DD'];
-  @Input() default = this.colors[0];
+  @Input() color: RGBA = this.hexToRgb(this.colors[0])!;
   colorChange: OutputEmitterRef<RGBA> = output();
 
-  public currentColor: string = this.default;
-
   public onColorChange(e: ColorEvent) {
-    this.currentColor = e.color.hex;
+    this.color = e.color.rgb;
     this.colorChange.emit(e.color.rgb);
+  }
+
+  private hexToRgb(hex: string) {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result
+      ? ({
+          r: parseInt(result[1], 16),
+          g: parseInt(result[2], 16),
+          b: parseInt(result[3], 16),
+        } as RGBA)
+      : null;
+  }
+
+  private rgbToHex(r: number, g: number, b: number) {
+    return (
+      '#' +
+      this.componentToHex(r) +
+      this.componentToHex(g) +
+      this.componentToHex(b)
+    );
+  }
+
+  private componentToHex(c: number) {
+    const hex = c.toString(16);
+    return hex.length == 1 ? '0' + hex : hex;
   }
 }
