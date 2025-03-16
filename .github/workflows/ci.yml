@@ -29,15 +29,15 @@ jobs:
       - name: Upgrade Bun
         run: bun upgrade
 
-      # 4️⃣ Clear Bun Cache to Fix SIGBUS
+      # 4️⃣ Clear Bun Cache (Fix SIGBUS)
       - name: Clean Bun Cache
         run: rm -rf ~/.bun/install/cache
 
-      # 5️⃣ Install Dependencies with Bun (Disable Postinstall)
-      - run: BUN_NO_POSTINSTALL=1 bun install --frozen-lockfile
+      # 5️⃣ Install Dependencies (No Postinstall)
+      - run: BUN_NO_POSTINSTALL=1 bun install --no-save
 
       # 6️⃣ Set Nx SHAs (Optimize Affected Commands)
       - uses: nrwl/nx-set-shas@v4
 
-      # 7️⃣ Run Nx Affected Commands with Bun
-      - run: bunx nx affected -t lint test build
+      # 7️⃣ Run Nx Affected Commands with Bun (Skipping Cache)
+      - run: NX_SKIP_NX_CACHE=1 bunx nx affected -t lint test build
