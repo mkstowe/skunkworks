@@ -14,18 +14,46 @@ jobs:
   main:
     runs-on: ubuntu-latest
     steps:
+      # 1️⃣ Checkout Repository
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      # Cache node_modules for Yarn
+      # 2️⃣ Set Up Node.js (Yarn)
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'yarn'
 
+      # 3️⃣ Install Yarn Dependencies
       - run: yarn install --immutable
+
+      # 4️⃣ Set Up Bun
+      - name: Install Bun
+        run: |
+          curl -fsSL https://bun.sh/install | bash
+          echo "$HOME/.bun/bin" >> $GITHUB_PATH
+
+      # 5️⃣ Cache Bun Dependencies
+      - name: Cache Bun Dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.bun/install/cache
+          key: bun-${{ runner.os }}-${{ hashFiles('**/bun.lockb') }}
+          restore-keys: |
+            bun-${{ runner.os }}-
+
+      # 6️⃣ Install Bun Dependencies (for Bun-based projects)
+      - run: bun install
+        if: hashFiles('**/bun.lockb') != ''
+
+      # 7️⃣ Set Nx SHAs (Optimize Affected Commands)
       - uses: nrwl/nx-set-shas@v4
 
-      # Run Nx affected commands using Yarn
+      # 8️⃣ Run Nx Affected Commands with Yarn
       - run: yarn nx affected -t lint test build
+
+      # 9️⃣ Run Bun API Project (if exists)
+      - name: Run Bun API Tests
+        run: bun run test
+        if: hashFiles('**/bun.lockb') != ''
