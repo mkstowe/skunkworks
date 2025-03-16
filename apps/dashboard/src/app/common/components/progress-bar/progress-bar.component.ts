@@ -24,7 +24,7 @@ export class ProgressBarComponent implements OnInit {
   @Input() color: colors = 'accent';
   @Input() dotSize: 'xs' | 'sm' | 'md' | 'lg' | 'xl' = 'xl';
   @Input() dotSpacing: 'xs' | 'sm' | 'md' | 'lg' | 'xl' = 'md';
-  @Input() update$ = new Subject();
+  @Input() update$ = new Subject<void>();
 
   @Output() valueChange = new EventEmitter<number>();
   public nextVal = 0;

@@ -1231,6 +1231,11 @@
   dependencies:
     "@jridgewell/trace-mapping" "0.3.9"
 
+"@ctrl/tinycolor@^4.1.0":
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/@ctrl/tinycolor/-/tinycolor-4.1.0.tgz#91a8f8120ffc9da2feb2a38f7862b300d5e9691a"
+  integrity sha512-WyOx8cJQ+FQus4Mm4uPIZA64gbk3Wxh0so5Lcii0aJifqwoVOlfFtorjLE0Hen4OYyHZMXDWqMmaQemBhgxFRQ==
+
 "@discoveryjs/json-ext@0.6.3":
   version "0.6.3"
   resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.6.3.tgz#f13c7c205915eb91ae54c557f5e92bddd8be0e83"
@@ -7310,6 +7315,11 @@ make-fetch-happen@^14.0.0, make-fetch-happen@^14.0.1, make-fetch-happen@^14.0.2,
     promise-retry "^2.0.1"
     ssri "^12.0.0"
 
+material-colors@^1.2.6:
+  version "1.2.6"
+  resolved "https://registry.yarnpkg.com/material-colors/-/material-colors-1.2.6.tgz#6d1958871126992ceecc72f4bcc4d8f010865f46"
+  integrity sha512-6qE4B9deFBIa9YSpOc9O0Sgc43zTeVYbgDT5veRKSlB2+ZuHNoVVxA1L/ckMUayV9Ay9y7Z/SZCLcGteW9i7bg==
+
 math-intrinsics@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/math-intrinsics/-/math-intrinsics-1.1.0.tgz#a0dd74be81e2aa5c2f27e65ce283605ee4e2b7f9"
@@ -7640,6 +7650,15 @@ neo-async@^2.6.2:
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.2.tgz#b4aafb93e3aeb2d8174ca53cf163ab7d7308305f"
   integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
+
+ngx-color@^10.0.0:
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/ngx-color/-/ngx-color-10.0.0.tgz#dfe4b273d2fae8aea2c49fd1a4fd67abf68f5579"
+  integrity sha512-WYNB/JWE8DzedJz7CuI9ewKFbRngeeTESXQKvHhdgymhil5enhlVFdufNTE6LMctAW5gZAmt/meNVtjNhZknlw==
+  dependencies:
+    "@ctrl/tinycolor" "^4.1.0"
+    material-colors "^1.2.6"
+    tslib "^2.3.0"
 
 node-abort-controller@^3.0.1:
   version "3.1.1"

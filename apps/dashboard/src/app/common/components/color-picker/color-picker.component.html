@@ -1,0 +1,13 @@
+<div class="flex w-full gap-8">
+  <color-chrome
+    class="grow"
+    [color]="currentColor"
+    [disableAlpha]="true"
+    (onChangeComplete)="onColorChange($event)"
+  ></color-chrome>
+  <color-circle
+    class="flex align-items-center justify-center py-auto"
+    [colors]="colors"
+    (onChangeComplete)="onColorChange($event)"
+  ></color-circle>
+</div>

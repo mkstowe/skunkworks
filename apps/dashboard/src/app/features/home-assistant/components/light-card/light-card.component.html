@@ -26,8 +26,23 @@
       <div class="name">
         {{ name || entity.attributes['friendly_name'] || '' }}
       </div>
-      <div class="brightness">
-        {{ valueAsPercentage(brightness || 0) + '%' }}
+      <div class="flex align-items-center gap-4">
+        <div class="brightness m-auto">
+          {{
+            brightness && brightness > 0
+              ? valueAsPercentage(brightness || 0) + '%'
+              : 'Off'
+          }}
+        </div>
+
+        <div class="detail-btn">
+          <button
+            class="btn btn-circle hover:btn-primary"
+            (click)="openDetail()"
+          >
+            <app-icon name="settings"></app-icon>
+          </button>
+        </div>
       </div>
     </div>
     <app-progress-bar
@@ -43,4 +58,9 @@
     ></app-progress-bar>
   </div>
 </div>
+
+<app-light-detail
+  [openModalSubject$]="openDetailSubject$"
+  [entity]="entity"
+></app-light-detail>
 }

@@ -40,6 +40,7 @@ export class IconService {
     'roomba.svg',
     'router.svg',
     'security-cam.svg',
+    'settings.svg',
     'shower.svg',
     'speaker.svg',
     'speedometer.svg',

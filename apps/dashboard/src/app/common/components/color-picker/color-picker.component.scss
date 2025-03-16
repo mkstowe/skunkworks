@@ -1,0 +1,54 @@
+:host {
+  display: block;
+}
+
+color-chrome {
+  .chrome-picker {
+    width: 100% !important;
+    background: var(--color-neutral) !important;
+    color: white !important;
+    border-radius: 10px !important;
+
+    .saturation {
+      border-top-left-radius: 10px !important;
+      border-top-right-radius: 10px !important;
+    }
+
+    .chrome-body {
+      padding: 18px !important;
+    }
+
+    input {
+      font-size: 1rem !important;
+      color: var(--color-light) !important;
+    }
+
+    .chrome-icon {
+      scale: 1.25 !important;
+      margin-top: 0 !important;
+
+      .chrome-toggle-svg {
+        path {
+          fill: var(--color-light) !important;
+        }
+
+        &:hover {
+          background: var(--color-light) !important;
+
+          path {
+            fill: var(--color-dark) !important;
+          }
+        }
+      }
+    }
+  }
+}
+
+color-circle {
+  .circle-picker {
+    width: unset !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+}

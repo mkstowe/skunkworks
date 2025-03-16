@@ -5,10 +5,16 @@ import { IconComponent } from '../../../../common/components/icon/icon.component
 import { ProgressBarComponent } from '../../../../common/components/progress-bar/progress-bar.component';
 import { HassEntity } from '../../models/Entity';
 import { HassService } from '../../services/hass.service';
+import { LightDetailComponent } from '../light-detail/light-detail.component';
 
 @Component({
   selector: 'app-light-card',
-  imports: [CommonModule, ProgressBarComponent, IconComponent],
+  imports: [
+    CommonModule,
+    ProgressBarComponent,
+    IconComponent,
+    LightDetailComponent,
+  ],
   templateUrl: './light-card.component.html',
   styleUrl: './light-card.component.scss',
 })
@@ -20,7 +26,8 @@ export class LightCardComponent implements OnInit {
   public entity?: HassEntity;
   public brightness: number | null = null;
   public active = false;
-  public valueChangeSubject$ = new Subject();
+  public valueChangeSubject$ = new Subject<void>();
+  public openDetailSubject$ = new Subject<void>();
 
   constructor(
     private hassService: HassService,
@@ -45,12 +52,9 @@ export class LightCardComponent implements OnInit {
   public toggleState() {
     this.hassService
       .toggleState('light', this.entityId)
-      .pipe(
-        delay(1550)
-        // tap(() => this.hassService.refresh())
-      )
+      .pipe(delay(1550))
       .subscribe(() => {
-        this.valueChangeSubject$.next(null);
+        this.valueChangeSubject$.next();
         this.cd.detectChanges();
       });
   }
@@ -67,15 +71,16 @@ export class LightCardComponent implements OnInit {
           entity_id: this.entityId,
         },
       })
-      .pipe
-      // delay(1250),
-      // tap(() => this.hassService.refresh())
-      ()
+      .pipe(delay(1250))
       .subscribe(() => {
         this.brightness = value;
-        this.valueChangeSubject$.next(null);
+        this.valueChangeSubject$.next();
         this.cd.detectChanges();
       });
+  }
+
+  public openDetail() {
+    this.openDetailSubject$.next();
   }
 
   public valueAsPercentage(value: number) {
