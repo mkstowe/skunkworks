@@ -19,20 +19,22 @@ jobs:
         with:
           fetch-depth: 0
 
-      # 2️⃣ Setup Node.js & Enable pnpm
+      # 2️⃣ Setup pnpm (Recommended Way)
+      - uses: pnpm/action-setup@v4
+        with:
+          version: latest
+
+      # 3️⃣ Setup Node.js with pnpm Caching
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'pnpm'
 
-      - name: Install pnpm
-        run: corepack enable
-
-      # 3️⃣ Install Dependencies with pnpm
+      # 4️⃣ Install Dependencies with pnpm
       - run: pnpm install --frozen-lockfile
 
-      # 4️⃣ Set Nx SHAs (Optimize Affected Commands)
+      # 5️⃣ Set Nx SHAs (Optimize Affected Commands)
       - uses: nrwl/nx-set-shas@v4
 
-      # 5️⃣ Run Nx Affected Commands with pnpm
+      # 6️⃣ Run Nx Affected Commands with pnpm
       - run: pnpm nx affected -t lint test build
