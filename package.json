@@ -23,6 +23,7 @@
     "@nx/eslint": "20.5.0",
     "@nx/eslint-plugin": "^20.5.0",
     "@nx/js": "20.5.0",
+    "@nx/node": "20.5.0",
     "@nx/playwright": "20.5.0",
     "@nx/vite": "20.5.0",
     "@nx/web": "20.5.0",
@@ -59,7 +60,7 @@
   },
   "dependencies": {
     "@angular/common": "~19.2.0",
-    "@angular/compiler": "~19.2.0",
+    "@angular/compiler": "^19.2.2",
     "@angular/core": "~19.2.0",
     "@angular/forms": "~19.2.0",
     "@angular/platform-browser": "~19.2.0",
