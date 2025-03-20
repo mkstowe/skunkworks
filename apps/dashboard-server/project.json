@@ -11,7 +11,7 @@
       "defaultConfiguration": "production",
       "options": {
         "platform": "node",
-        "outputPath": "dist/apps/dashboard-server",
+        "outputPath": "apps/dashboard-server/dist",
         "format": ["cjs"],
         "bundle": false,
         "main": "apps/dashboard-server/src/main.ts",
@@ -20,6 +20,7 @@
         "generatePackageJson": true,
         "esbuildOptions": {
           "sourcemap": true,
+          "outbase": "apps/dashboard-server/src",
           "outExtension": {
             ".js": ".js"
           }
