@@ -21,6 +21,10 @@ app.use(
 
 app.route('/hass', hass);
 
+app.get('', (c) => {
+  return c.text('Hello!');
+});
+
 async function toFetchRequest(req: IncomingMessage): Promise<Request> {
   const body =
     req.method === 'GET' || req.method === 'HEAD'

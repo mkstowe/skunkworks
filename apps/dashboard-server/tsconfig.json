@@ -11,7 +11,7 @@
     "esModuleInterop": true,
     "jsx": "react-jsx",
     "jsxImportSource": "hono/jsx",
-    "outDir": "./dist",
-    "rootDir": "./src"
+    "outDir": "../../dist/apps/dashboard-server",
+    "rootDir": "."
   }
 }

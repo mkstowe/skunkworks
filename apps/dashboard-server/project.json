@@ -11,7 +11,7 @@
       "defaultConfiguration": "production",
       "options": {
         "platform": "node",
-        "outputPath": "apps/dashboard-server/dist",
+        "outputPath": "dist/apps/dashboard-server",
         "format": ["cjs"],
         "bundle": false,
         "main": "apps/dashboard-server/src/main.ts",
@@ -20,14 +20,23 @@
         "generatePackageJson": true,
         "esbuildOptions": {
           "sourcemap": true,
-          "outbase": "apps/dashboard-server/src",
           "outExtension": {
             ".js": ".js"
           }
         }
       },
       "configurations": {
-        "development": {},
+        "development": {
+          "assets": [
+            "apps/dashboard-server/src/assets",
+            "apps/dashboard-server/.env",
+            {
+              "glob": ".env",
+              "input": "apps/dashboard-server",
+              "output": "."
+            }
+          ]
+        },
         "production": {
           "esbuildOptions": {
             "sourcemap": false,
