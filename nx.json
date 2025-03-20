@@ -66,6 +66,9 @@
       "style": "scss",
       "skipTests": true,
       "displayBlock": true
+    },
+    "@nx/angular:service": {
+      "skipTests": true
     }
   }
 }
