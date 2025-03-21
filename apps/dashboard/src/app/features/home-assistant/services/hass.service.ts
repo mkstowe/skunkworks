@@ -2,12 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, retry, shareReplay } from 'rxjs';
 import { ServiceCall } from '../models/ServiceCall';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HassService implements OnDestroy {
-  private readonly WS_URL = 'ws://localhost:3000/hass/ws';
+  private readonly wsUrl = `${environment.wsUrl}/hass/ws`;
+  private readonly apiUrl = `${environment.apiUrl}/hass`;
   private socket!: WebSocket;
   private reconnectTimeout = 5000;
   private isConnected = false;
@@ -36,21 +38,11 @@ export class HassService implements OnDestroy {
 
   public callService(service: ServiceCall) {
     service.type = 'call_service';
-    return this.http.post(`http://localhost:3000/hass/entity/service`, service);
-  }
-
-  public toggleState(domain: string, entity: string) {
-    return this.callService({
-      domain,
-      service: 'toggle',
-      target: {
-        entity_id: entity,
-      },
-    });
+    return this.http.post(`${this.apiUrl}/entity/service`, service);
   }
 
   private connectWebsocket() {
-    this.socket = new WebSocket(this.WS_URL);
+    this.socket = new WebSocket(this.wsUrl);
 
     console.log(this.socket);
     this.socket.onopen = () => {

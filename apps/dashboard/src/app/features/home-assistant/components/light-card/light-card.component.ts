@@ -6,6 +6,7 @@ import { ProgressBarComponent } from '../../../../common/components/progress-bar
 import { HassEntity } from '../../models/Entity';
 import { HassService } from '../../services/hass.service';
 import { LightDetailComponent } from '../light-detail/light-detail.component';
+import { LightService } from '../../services/light.service';
 
 @Component({
   selector: 'app-light-card',
@@ -31,6 +32,7 @@ export class LightCardComponent implements OnInit {
 
   constructor(
     private hassService: HassService,
+    private lightService: LightService,
     private cd: ChangeDetectorRef
   ) {}
 
@@ -50,8 +52,8 @@ export class LightCardComponent implements OnInit {
   }
 
   public toggleState() {
-    this.hassService
-      .toggleState('light', this.entityId)
+    this.lightService
+      .toggleState(this.entityId)
       .pipe(delay(1550))
       .subscribe(() => {
         this.valueChangeSubject$.next();
@@ -60,17 +62,8 @@ export class LightCardComponent implements OnInit {
   }
 
   public onBrightnessChange(value: number) {
-    this.hassService
-      .callService({
-        domain: 'light',
-        service: 'turn_on',
-        service_data: {
-          brightness: value,
-        },
-        target: {
-          entity_id: this.entityId,
-        },
-      })
+    this.lightService
+      .changeBrightness(this.entityId, value)
       .pipe(delay(1250))
       .subscribe(() => {
         this.brightness = value;
@@ -84,6 +77,8 @@ export class LightCardComponent implements OnInit {
   }
 
   public valueAsPercentage(value: number) {
+    // Min: 0
+    // Max: 255
     return Math.round((value / 255) * 100);
   }
 

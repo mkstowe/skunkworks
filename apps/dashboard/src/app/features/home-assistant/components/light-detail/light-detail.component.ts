@@ -4,8 +4,7 @@ import { RGBA } from 'ngx-color';
 import { Subject } from 'rxjs';
 import { ColorPickerComponent } from '../../../../common/components/color-picker/color-picker.component';
 import { HassEntity } from '../../models/Entity';
-import { ServiceCall } from '../../models/ServiceCall';
-import { HassService } from '../../services/hass.service';
+import { LightService } from '../../services/light.service';
 
 @Component({
   selector: 'app-light-detail',
@@ -22,7 +21,7 @@ export class LightDetailComponent implements OnInit {
 
   @ViewChild('modal') modal!: ElementRef<HTMLDialogElement>;
 
-  constructor(private hassService: HassService) {}
+  constructor(private lightService: LightService) {}
 
   ngOnInit(): void {
     this.openModalSubject$.subscribe(() => {
@@ -42,18 +41,8 @@ export class LightDetailComponent implements OnInit {
   }
 
   public applyColor() {
-    const c = this.color;
-    const service: ServiceCall = {
-      domain: 'light',
-      service: 'turn_on',
-      service_data: {
-        rgb_color: [c.r, c.g, c.b],
-      },
-      target: {
-        entity_id: this.entity.entity_id,
-      },
-    };
-
-    this.hassService.callService(service).subscribe();
+    this.lightService
+      .changeColor(this.entity.entity_id, this.color)
+      .subscribe();
   }
 }

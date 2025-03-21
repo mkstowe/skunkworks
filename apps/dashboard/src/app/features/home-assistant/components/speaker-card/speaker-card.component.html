@@ -1,0 +1,68 @@
+@if (entity) {
+    <div class="bg-background flex gap-8 p-3 items-center h-full">
+      @if(icon) {
+      <button
+        [class.active]="active"
+        [class.bg-light]="active"
+        [class.bg-dark]="!active"
+        class="btn bg-dark w-18 h-18 rounded-2xl border-2 border-light"
+        (click)="toggleState()"
+      >
+        <div class="icon w-full h-full">
+          <app-icon
+            [name]="icon"
+            color="basic"
+            colorActive="primary"
+            [active]="active"
+          ></app-icon>
+        </div>
+      </button>
+      }
+    
+      <div class="flex w-full flex-col items-center">
+        <div
+          class="info text-lg font-bold w-full flex justify-between items-center px-2"
+        >
+          <div class="name">
+            {{ name || entity.attributes['friendly_name'] || '' }}
+          </div>
+          <div class="flex align-items-center gap-4">
+            <div class="volume m-auto">
+              {{
+                volume && volume > 0
+                  ? valueAsPercentage(volume || 0) + '%'
+                  : 'Off'
+              }}
+            </div>
+    
+            <div class="detail-btn">
+              <button
+                class="btn btn-circle hover:btn-primary"
+                (click)="openDetail()"
+              >
+                <app-icon name="settings"></app-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+        <app-progress-bar
+          [min]="0"
+          [max]="255"
+          [value]="volume || 0"
+          [step]="100 / 20"
+          dotSize="xl"
+          dotSpacing="md"
+          color="accent"
+          [update$]="valueChangeSubject$"
+          (valueChange)="onVolumeChange($event)"
+        ></app-progress-bar>
+      </div>
+    </div>
+    
+    <!-- <app-speaker-detail
+      [openModalSubject$]="openDetailSubject$"
+      [entity]="entity"
+    ></app-speaker-detail> -->
+    }
+    
+    
