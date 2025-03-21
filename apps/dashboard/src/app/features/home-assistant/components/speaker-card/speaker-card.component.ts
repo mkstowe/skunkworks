@@ -1,13 +1,12 @@
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { HassEntity } from 'home-assistant-js-websocket';
-import { HassService } from '../../services/hass.service';
-import { delay, Subject, switchMap } from 'rxjs';
+import { delay, Subject } from 'rxjs';
 import { IconComponent } from '../../../../common/components/icon/icon.component';
 import { ProgressBarComponent } from '../../../../common/components/progress-bar/progress-bar.component';
-import { SpeakerDetailComponent } from '../speaker-detail/speaker-detail.component';
-import { ServiceCall } from '../../models/ServiceCall';
+import { HassService } from '../../services/hass.service';
 import { SpeakerService } from '../../services/speaker.service';
+import { SpeakerDetailComponent } from '../speaker-detail/speaker-detail.component';
 
 @Component({
   selector: 'app-speaker-card',
@@ -38,17 +37,11 @@ export class SpeakerCardComponent implements OnInit {
   ) {}
 
   public ngOnInit(): void {
-    this.hassService.refetch$
-      .pipe(
-        switchMap(() => {
-          return this.hassService.entities;
-        })
-      )
-      .subscribe((res: any) => {
-        this.entity = res[this.entityId];
-        this.volume = (this.entity?.attributes['volume'] as number) || 0;
-        this.active = this.entity?.state === 'on';
-      });
+    this.hassService.entities$.subscribe((res: any) => {
+      this.entity = res[this.entityId];
+      this.volume = (this.entity?.attributes['volume'] as number) || 0;
+      this.active = this.entity?.state === 'on';
+    });
   }
 
   public toggleState() {

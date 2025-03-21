@@ -1,0 +1,6 @@
+@if (entity) {
+<label class="font-bold flex gap-4">
+  {{ name || entity.attributes['friendly_name'] || '' }}
+  <input type="checkbox" [checked]="active" class="toggle toggle-accent" />
+</label>
+}

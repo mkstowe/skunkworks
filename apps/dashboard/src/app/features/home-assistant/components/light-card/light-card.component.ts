@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
-import { delay, Subject, switchMap } from 'rxjs';
+import { delay, Subject } from 'rxjs';
 import { IconComponent } from '../../../../common/components/icon/icon.component';
 import { ProgressBarComponent } from '../../../../common/components/progress-bar/progress-bar.component';
+import { sizes } from '../../../../common/models/Sizes';
 import { HassEntity } from '../../models/Entity';
 import { HassService } from '../../services/hass.service';
-import { LightDetailComponent } from '../light-detail/light-detail.component';
 import { LightService } from '../../services/light.service';
+import { LightDetailComponent } from '../light-detail/light-detail.component';
 
 @Component({
   selector: 'app-light-card',
@@ -23,7 +24,7 @@ export class LightCardComponent implements OnInit {
   @Input() entityId!: string;
   @Input() name?: string;
   @Input() icon?: string;
-  @Input() size?: 'sm' | 'md' | 'lg' | 'xl' = 'md';
+  @Input() size?: sizes = 'md';
   public entity?: HassEntity;
   public brightness: number | null = null;
   public active = false;
@@ -37,18 +38,11 @@ export class LightCardComponent implements OnInit {
   ) {}
 
   public ngOnInit(): void {
-    this.hassService.refetch$
-      .pipe(
-        switchMap(() => {
-          return this.hassService.entities;
-        })
-      )
-      .subscribe((res: any) => {
-        this.entity = res[this.entityId];
-        this.brightness =
-          (this.entity?.attributes['brightness'] as number) || 0;
-        this.active = this.entity?.state === 'on';
-      });
+    this.hassService.entities$.subscribe((res: any) => {
+      this.entity = res[this.entityId];
+      this.brightness = (this.entity?.attributes['brightness'] as number) || 0;
+      this.active = this.entity?.state === 'on';
+    });
   }
 
   public toggleState() {

@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject, retry, shareReplay } from 'rxjs';
-import { ServiceCall } from '../models/ServiceCall';
+import { BehaviorSubject, retry, shareReplay, switchMap, tap } from 'rxjs';
 import { environment } from '../../../../environments/environment';
+import { ServiceCall } from '../models/ServiceCall';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +14,7 @@ export class HassService implements OnDestroy {
   private reconnectTimeout = 5000;
   private isConnected = false;
   private entityState$ = new BehaviorSubject<Record<string, any>>({});
-  private entities$ = new BehaviorSubject({});
+  private _entities$ = new BehaviorSubject({});
   private _refresh$ = new BehaviorSubject<null>(null);
 
   constructor(private http: HttpClient) {
@@ -29,16 +29,24 @@ export class HassService implements OnDestroy {
     return this._refresh$.asObservable();
   }
 
-  public get entities() {
-    return this.entities$.asObservable().pipe(
-      retry(3), // Retry if error occurs
-      shareReplay(1) // Cache latest value
+  public get entities$() {
+    return this.refetch$.pipe(
+      switchMap(() => {
+        return this._entities$.asObservable().pipe(retry(3), shareReplay(1));
+      })
     );
   }
 
   public callService(service: ServiceCall) {
     service.type = 'call_service';
-    return this.http.post(`${this.apiUrl}/entity/service`, service);
+
+    if (!service.domain) {
+      service.domain = service.target.entity_id?.split('.')[0];
+    }
+
+    return this.http
+      .post(`${this.apiUrl}/entity/service`, service)
+      .pipe(tap(() => this._refresh$.next(null)));
   }
 
   private connectWebsocket() {
@@ -53,7 +61,7 @@ export class HassService implements OnDestroy {
     this.socket.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data);
-        this.entities$.next(data);
+        this._entities$.next(data);
       } catch (error) {
         console.error('Error parsing WebSocket message:', error);
       }
