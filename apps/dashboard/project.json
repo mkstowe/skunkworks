@@ -75,9 +75,12 @@
         },
         "development": {
           "buildTarget": "dashboard:build:development"
+        },
+        "local": {
+          "buildTarget": "dashboard:build:local"
         }
       },
-      "defaultConfiguration": "development"
+      "defaultConfiguration": "local"
     },
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
