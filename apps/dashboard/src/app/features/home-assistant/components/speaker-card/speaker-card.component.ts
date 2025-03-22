@@ -89,4 +89,11 @@ export class SpeakerCardComponent implements OnInit {
     // Max: 1
     return value * 100;
   }
+
+  // TODO: Track info
+  // TODO: Source speaker
+  // TODO: Prev/Next
+  // TODO: More - Shuffle
+  // TODO: More - Playlist select
+  // TODO: More - Seek bar
 }

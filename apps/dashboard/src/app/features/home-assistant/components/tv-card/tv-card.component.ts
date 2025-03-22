@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-tv-card',
@@ -7,4 +7,10 @@ import { CommonModule } from '@angular/common';
   templateUrl: './tv-card.component.html',
   styleUrl: './tv-card.component.scss',
 })
-export class TvCardComponent {}
+export class TvCardComponent {
+  // TODO: Power
+  // TODO: Volume/Mute
+  // TODO: Source
+  // TODO: Quick launch apps
+  // TODO: More - Remote
+}

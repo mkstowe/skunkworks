@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-button-card',
@@ -7,4 +7,8 @@ import { CommonModule } from '@angular/common';
   templateUrl: './button-card.component.html',
   styleUrl: './button-card.component.scss',
 })
-export class ButtonCardComponent {}
+export class ButtonCardComponent {
+  // TODO: Toggle state
+  // TODO: Call service
+  // TODO: Confirm
+}

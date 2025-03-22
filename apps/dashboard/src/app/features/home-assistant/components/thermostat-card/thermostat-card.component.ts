@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-thermostat-card',
@@ -7,4 +7,10 @@ import { CommonModule } from '@angular/common';
   templateUrl: './thermostat-card.component.html',
   styleUrl: './thermostat-card.component.scss',
 })
-export class ThermostatCardComponent {}
+export class ThermostatCardComponent {
+  // TODO: Temp
+  // TODO: Target temp
+  // TODO: Mode toggle
+  // TODO: Fan toggle
+  // TODO: Scene
+}

@@ -17,7 +17,8 @@
     <div
       [style.gap]="dotGap"
       [style.width]="nextVal + '%'"
-      class="absolute inset-0 flex overflow-hidden text-accent transition-[width] duration-500 ease-in-out"
+      [class]="textColorClass"
+      class="absolute inset-0 flex overflow-hidden transition-[width] duration-500 ease-in-out"
     >
       @for (dot of dots; track dot) {
       <div class="tooltip" [attr.data-tip]="dot">
@@ -25,7 +26,7 @@
           tabindex="{0}"
           [style.width]="dotPixels + 'px'"
           [style.height]="dotPixels + 'px'"
-          class="shrink-0 rounded-full bg-current cursor-pointer bg-secondary"
+          class="shrink-0 rounded-full bg-current cursor-pointer"
           (click)="onDotClick(dot)"
           (keyup)="onDotClick(dot)"
         ></div>

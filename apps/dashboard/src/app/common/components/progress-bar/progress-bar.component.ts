@@ -25,6 +25,7 @@ export class ProgressBarComponent implements OnInit {
   @Input() dotSize: 'xs' | 'sm' | 'md' | 'lg' | 'xl' = 'xl';
   @Input() dotSpacing: 'xs' | 'sm' | 'md' | 'lg' | 'xl' = 'md';
   @Input() update$ = new Subject<void>();
+  public textColorClass = 'text-' + this.color;
 
   @Output() valueChange = new EventEmitter<number>();
   public nextVal = 0;
@@ -75,6 +76,8 @@ export class ProgressBarComponent implements OnInit {
         this.dotGap = '1.5rem';
         break;
     }
+
+    this.textColorClass = 'text-' + this.color;
 
     this.nextVal = this.valueAsPercentage(this.value);
     this.update$.subscribe(() => {

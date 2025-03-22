@@ -1,6 +1,19 @@
 @if (entity) {
-<label class="font-bold flex gap-4">
-  {{ name || entity.attributes['friendly_name'] || '' }}
-  <input type="checkbox" [checked]="active" class="toggle toggle-accent" />
-</label>
+<div class="card border-light border-2 card-md shadow-sm">
+  <div class="card-body gap-4">
+    <div class="card-title flex gap-4 pr-4">
+      @if (icon) {
+      <div
+        class="flex justify-start items-center text-2xl text-light rounded-lg aspect-square"
+      >
+        <ng-icon class="" [svg]="icon"></ng-icon>
+      </div>
+      } {{ name || entity.attributes['friendly_name'] || '' }}
+    </div>
+    <div class="flex gap-4 items-center pl-1">
+      <div class="text-lg font-bold">{{ entity.state | uppercase }}</div>
+      <input type="checkbox" [checked]="active" class="toggle toggle-accent" />
+    </div>
+  </div>
+</div>
 }

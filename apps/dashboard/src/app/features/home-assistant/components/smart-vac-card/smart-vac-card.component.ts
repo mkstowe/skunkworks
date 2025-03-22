@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-smart-vac-card',
@@ -7,4 +7,11 @@ import { CommonModule } from '@angular/common';
   templateUrl: './smart-vac-card.component.html',
   styleUrl: './smart-vac-card.component.scss',
 })
-export class SmartVacCardComponent {}
+export class SmartVacCardComponent {
+  // TODO: Start/Stop/Pause/Dock
+  // TODO: Status
+  // TODO: Remaining time
+  // TODO: Battery
+  // TODO: More - Map view
+  // TODO: More - select room
+}

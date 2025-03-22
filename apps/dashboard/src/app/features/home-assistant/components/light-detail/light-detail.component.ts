@@ -45,4 +45,7 @@ export class LightDetailComponent implements OnInit {
       .changeColor(this.entity.entity_id, this.color)
       .subscribe();
   }
+
+  // TODO: Effects
+  // TODO: Transition time
 }

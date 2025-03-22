@@ -8,13 +8,10 @@
     class="btn bg-dark w-18 h-18 rounded-2xl border-2 border-light"
     (click)="toggleState()"
   >
-    <div class="icon w-full h-full">
-      <app-icon
-        [name]="icon"
-        color="basic"
-        colorActive="primary"
-        [active]="active"
-      ></app-icon>
+    <div
+      class="flex justify-center items-center text-dark text-4xl w-full h-full"
+    >
+      <ng-icon [svg]="icon"></ng-icon>
     </div>
   </button>
   }
@@ -37,10 +34,10 @@
 
         <div class="detail-btn">
           <button
-            class="btn btn-circle hover:btn-primary"
+            class="btn btn-circle btn-ghost text-3xl hover:btn-primary"
             (click)="openDetail()"
           >
-            <app-icon name="settings"></app-icon>
+            <ng-icon name="phosphorSliders"></ng-icon>
           </button>
         </div>
       </div>
@@ -52,7 +49,7 @@
       [step]="255 / 20"
       dotSize="xl"
       dotSpacing="md"
-      color="accent"
+      color="primary"
       [update$]="valueChangeSubject$"
       (valueChange)="onBrightnessChange($event)"
     ></app-progress-bar>

@@ -2,8 +2,14 @@
   <app-light-card
     class="h-32"
     entityId="light.office"
-    icon="lightbulb"
+    [icon]="dripLightbulb"
   ></app-light-card>
 
-  <app-switch-card class="h-32" entityId="light.office"></app-switch-card>
+  <div class="flex">
+    <app-switch-card
+      class="h-32 shrink"
+      entityId="light.office"
+      [icon]="dripLightbulb"
+    ></app-switch-card>
+  </div>
 </div>
