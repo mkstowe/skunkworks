@@ -1,35 +1,18 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { NgIcon } from '@ng-icons/core';
 import { HassEntity } from 'home-assistant-js-websocket';
-import { delay, Subject, switchMap } from 'rxjs';
-import { IconComponent } from '../../../../common/components/icon/icon.component';
+import { delay, Subject } from 'rxjs';
 import { ProgressBarComponent } from '../../../../common/components/progress-bar/progress-bar.component';
 import { HassService } from '../../services/hass.service';
 import { SpeakerService } from '../../services/speaker.service';
 import { SpeakerDetailComponent } from '../speaker-detail/speaker-detail.component';
-import { NgIcon, provideIcons } from '@ng-icons/core';
-import { phosphorSliders } from '@ng-icons/phosphor-icons/regular';
-import {
-  phosphorPause,
-  phosphorSkipForward,
-  phosphorPlay,
-  phosphorSkipBack,
-} from '@ng-icons/phosphor-icons/regular';
 
 @Component({
   selector: 'app-speaker-card',
   imports: [CommonModule, ProgressBarComponent, SpeakerDetailComponent, NgIcon],
   templateUrl: './speaker-card.component.html',
   styleUrl: './speaker-card.component.scss',
-  providers: [
-    provideIcons({
-      phosphorSliders,
-      phosphorPause,
-      phosphorSkipBack,
-      phosphorSkipForward,
-      phosphorPlay,
-    }),
-  ],
 })
 export class SpeakerCardComponent implements OnInit {
   @Input() entityId!: string;

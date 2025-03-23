@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
-import { NgIcon, provideIcons } from '@ng-icons/core';
-import { phosphorSliders } from '@ng-icons/phosphor-icons/regular';
+import { NgIcon } from '@ng-icons/core';
 import { delay, Subject } from 'rxjs';
 import { ProgressBarComponent } from '../../../../common/components/progress-bar/progress-bar.component';
 import { sizes } from '../../../../common/models/Sizes';
@@ -15,7 +14,6 @@ import { LightDetailComponent } from '../light-detail/light-detail.component';
   imports: [CommonModule, ProgressBarComponent, LightDetailComponent, NgIcon],
   templateUrl: './light-card.component.html',
   styleUrl: './light-card.component.scss',
-  providers: [provideIcons({ phosphorSliders })],
 })
 export class LightCardComponent implements OnInit {
   @Input() entityId!: string;

@@ -35,7 +35,7 @@
             class="btn btn-circle btn-ghost text-3xl hover:btn-primary"
             (click)="openDetail()"
           >
-            <ng-icon name="phosphorSliders"></ng-icon>
+            <ng-icon name="sliders"></ng-icon>
           </button>
         </div>
       </div>
@@ -58,23 +58,21 @@
           class="btn btn-circle btn-ghost text-2xl hover:btn-primary"
           (click)="prevTrack()"
         >
-          <ng-icon name="phosphorSkipBack"></ng-icon>
+          <ng-icon name="skipBack"></ng-icon>
         </button>
 
         <button
           class="btn btn-circle btn-ghost text-2xl hover:btn-primary"
           (click)="togglePlayback()"
         >
-          <ng-icon
-            [name]="playing ? 'phosphorPause' : 'phosphorPlay'"
-          ></ng-icon>
+          <ng-icon [name]="playing ? 'pause' : 'play'"></ng-icon>
         </button>
 
         <button
           class="btn btn-circle btn-ghost text-2xl hover:btn-primary"
           (click)="nextTrack()"
         >
-          <ng-icon name="phosphorSkipForward"></ng-icon>
+          <ng-icon name="skipForward"></ng-icon>
         </button>
       </div>
     </div>
