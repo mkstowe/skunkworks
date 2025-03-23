@@ -1,23 +1,35 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { HassEntity } from 'home-assistant-js-websocket';
-import { delay, Subject } from 'rxjs';
+import { delay, Subject, switchMap } from 'rxjs';
 import { IconComponent } from '../../../../common/components/icon/icon.component';
 import { ProgressBarComponent } from '../../../../common/components/progress-bar/progress-bar.component';
 import { HassService } from '../../services/hass.service';
 import { SpeakerService } from '../../services/speaker.service';
 import { SpeakerDetailComponent } from '../speaker-detail/speaker-detail.component';
+import { NgIcon, provideIcons } from '@ng-icons/core';
+import { phosphorSliders } from '@ng-icons/phosphor-icons/regular';
+import {
+  phosphorPause,
+  phosphorSkipForward,
+  phosphorPlay,
+  phosphorSkipBack,
+} from '@ng-icons/phosphor-icons/regular';
 
 @Component({
   selector: 'app-speaker-card',
-  imports: [
-    CommonModule,
-    IconComponent,
-    ProgressBarComponent,
-    SpeakerDetailComponent,
-  ],
+  imports: [CommonModule, ProgressBarComponent, SpeakerDetailComponent, NgIcon],
   templateUrl: './speaker-card.component.html',
   styleUrl: './speaker-card.component.scss',
+  providers: [
+    provideIcons({
+      phosphorSliders,
+      phosphorPause,
+      phosphorSkipBack,
+      phosphorSkipForward,
+      phosphorPlay,
+    }),
+  ],
 })
 export class SpeakerCardComponent implements OnInit {
   @Input() entityId!: string;
@@ -27,8 +39,11 @@ export class SpeakerCardComponent implements OnInit {
   public entity?: HassEntity;
   public volume: number | null = null;
   public active = false;
+  public playing = false;
   public valueChangeSubject$ = new Subject<void>();
   public openDetailSubject$ = new Subject<void>();
+
+  private onStates = ['on', 'idle', 'playing', 'paused'];
 
   constructor(
     private hassService: HassService,
@@ -39,8 +54,10 @@ export class SpeakerCardComponent implements OnInit {
   public ngOnInit(): void {
     this.hassService.entities$.subscribe((res: any) => {
       this.entity = res[this.entityId];
-      this.volume = (this.entity?.attributes['volume'] as number) || 0;
-      this.active = this.entity?.state === 'on';
+      this.volume =
+        +(this.entity?.attributes['volume_level'] as number)?.toFixed(2) || 0;
+      this.active = this.onStates.includes(this.entity?.state || '');
+      this.playing = this.entity?.state === 'playing';
     });
   }
 
@@ -54,30 +71,48 @@ export class SpeakerCardComponent implements OnInit {
       });
   }
 
-  public togglePlayback() {
-    this.speakerService.togglePlayback(this.entityId).subscribe(() => {
+  public turnOn() {
+    this.speakerService.turnOn(this.entityId).subscribe(() => {
       this.valueChangeSubject$.next();
     });
   }
 
+  public togglePlayback() {
+    if (!this.active) {
+      this.speakerService.turnOn(this.entityId).pipe(delay(1250)).subscribe();
+    } else {
+      this.speakerService
+        .togglePlayback(this.entityId)
+        .pipe(delay(1250))
+        .subscribe(() => {
+          this.valueChangeSubject$.next();
+        });
+    }
+  }
+
+  public nextTrack() {
+    this.speakerService
+      .nextTrack(this.entityId)
+      .subscribe(() => this.valueChangeSubject$.next());
+  }
+
+  public prevTrack() {
+    this.speakerService
+      .prevTrack(this.entityId)
+      .subscribe(() => this.valueChangeSubject$.next());
+  }
+
   public onVolumeChange(value: number) {
-    // this.hassService
-    //   .callService({
-    //     domain: 'media_player',
-    //     service: 'volume_set',
-    //     service_data: {
-    //       level: value,
-    //     },
-    //     target: {
-    //       entity_id: this.entityId,
-    //     },
-    //   })
-    //   .pipe(delay(1250))
-    //   .subscribe(() => {
-    //     this.volume = value;
-    //     this.valueChangeSubject$.next();
-    //     this.cd.detectChanges();
-    //   });
+    const vol = value / 100;
+
+    this.speakerService
+      .changeVolume(this.entityId, vol)
+      .pipe(delay(1250))
+      .subscribe(() => {
+        this.volume = vol;
+        this.valueChangeSubject$.next();
+        this.cd.detectChanges();
+      });
   }
 
   public openDetail() {
