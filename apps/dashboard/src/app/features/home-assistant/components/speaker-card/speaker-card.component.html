@@ -42,14 +42,13 @@
     </div>
     <div class="flex w-full justify-between items-center pr-2">
       <app-progress-bar
-        [min]="0"
-        [max]="100"
-        [value]="valueAsPercentage(volume || 0)"
-        [step]="100 / 18"
-        dotSize="sm"
-        dotSpacing="sm"
-        color="primary"
-        [update$]="valueChangeSubject$"
+        [value]="volumeProgress || 0"
+        [total]="numDots"
+        [interactive]="true"
+        activeColor="bg-primary"
+        inactiveColor="bg-neutral"
+        dotSize="w-2 h-2 sm:w-3 sm:h-3"
+        gapSize="gap-1"
         (valueChange)="onVolumeChange($event)"
       ></app-progress-bar>
 

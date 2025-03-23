@@ -43,15 +43,13 @@
       </div>
     </div>
     <app-progress-bar
-    class="w-full"
-      [min]="0"
-      [max]="255"
-      [value]="brightness || 0"
-      [step]="255 / 20"
-      dotSize="md"
-      dotSpacing="md"
-      color="primary"
-      [update$]="valueChangeSubject$"
+      [value]="brightnessProgress || 0"
+      [total]="numDots"
+      [interactive]="true"
+      activeColor="bg-primary"
+      inactiveColor="bg-neutral"
+      dotSize="w-3 h-3 sm:w-4 sm:h-4"
+      gapSize="gap-2"
       (valueChange)="onBrightnessChange($event)"
     ></app-progress-bar>
   </div>

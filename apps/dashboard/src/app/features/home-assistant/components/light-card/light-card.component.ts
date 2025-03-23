@@ -1,9 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { NgIcon } from '@ng-icons/core';
 import { delay, Subject } from 'rxjs';
 import { ProgressBarComponent } from '../../../../common/components/progress-bar/progress-bar.component';
-import { sizes } from '../../../../common/models/Sizes';
 import { HassEntity } from '../../models/Entity';
 import { HassService } from '../../services/hass.service';
 import { LightService } from '../../services/light.service';
@@ -19,46 +18,39 @@ export class LightCardComponent implements OnInit {
   @Input() entityId!: string;
   @Input() name?: string;
   @Input() icon?: string;
-  @Input() size?: sizes = 'md';
   public entity?: HassEntity;
   public brightness: number | null = null;
   public active = false;
-  public valueChangeSubject$ = new Subject<void>();
   public openDetailSubject$ = new Subject<void>();
+  public brightnessProgress = 0;
+  public numDots = 20;
 
   constructor(
     private hassService: HassService,
-    private lightService: LightService,
-    private cd: ChangeDetectorRef
+    private lightService: LightService
   ) {}
 
   public ngOnInit(): void {
     this.hassService.entities$.subscribe((res: any) => {
       this.entity = res[this.entityId];
       this.brightness = (this.entity?.attributes['brightness'] as number) || 0;
+      this.brightnessProgress = Math.round(
+        (this.brightness / 255) * this.numDots
+      );
       this.active = this.entity?.state === 'on';
     });
   }
 
   public toggleState() {
-    this.lightService
-      .toggleState(this.entityId)
-      .pipe(delay(1550))
-      .subscribe(() => {
-        this.valueChangeSubject$.next();
-        this.cd.detectChanges();
-      });
+    this.lightService.toggleState(this.entityId).pipe(delay(1550)).subscribe();
   }
 
   public onBrightnessChange(value: number) {
+    const newBrightness = value * 255;
     this.lightService
-      .changeBrightness(this.entityId, value)
+      .changeBrightness(this.entityId, newBrightness)
       .pipe(delay(1550))
-      .subscribe(() => {
-        this.brightness = value;
-        this.valueChangeSubject$.next();
-        this.cd.detectChanges();
-      });
+      .subscribe();
   }
 
   public openDetail() {

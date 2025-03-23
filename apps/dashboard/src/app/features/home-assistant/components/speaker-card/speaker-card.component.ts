@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { NgIcon } from '@ng-icons/core';
 import { HassEntity } from 'home-assistant-js-websocket';
 import { delay, Subject } from 'rxjs';
@@ -18,20 +18,19 @@ export class SpeakerCardComponent implements OnInit {
   @Input() entityId!: string;
   @Input() name?: string;
   @Input() icon?: string;
-  @Input() size?: 'sm' | 'md' | 'lg' | 'xl' = 'md';
   public entity?: HassEntity;
-  public volume: number | null = null;
+  public volume: number | null = 15;
   public active = false;
   public playing = false;
-  public valueChangeSubject$ = new Subject<void>();
   public openDetailSubject$ = new Subject<void>();
+  public numDots = 20;
+  public volumeProgress = 0;
 
   private onStates = ['on', 'idle', 'playing', 'paused'];
 
   constructor(
     private hassService: HassService,
-    private speakerService: SpeakerService,
-    private cd: ChangeDetectorRef
+    private speakerService: SpeakerService
   ) {}
 
   public ngOnInit(): void {
@@ -39,6 +38,7 @@ export class SpeakerCardComponent implements OnInit {
       this.entity = res[this.entityId];
       this.volume =
         +(this.entity?.attributes['volume_level'] as number)?.toFixed(2) || 0;
+      this.volumeProgress = this.volume * this.numDots;
       this.active = this.onStates.includes(this.entity?.state || '');
       this.playing = this.entity?.state === 'playing';
     });
@@ -48,16 +48,11 @@ export class SpeakerCardComponent implements OnInit {
     this.speakerService
       .toggleState(this.entityId)
       .pipe(delay(1550))
-      .subscribe(() => {
-        this.valueChangeSubject$.next();
-        this.cd.detectChanges();
-      });
+      .subscribe();
   }
 
   public turnOn() {
-    this.speakerService.turnOn(this.entityId).pipe(delay(1250)).subscribe(() => {
-      this.valueChangeSubject$.next();
-    });
+    this.speakerService.turnOn(this.entityId).pipe(delay(1250)).subscribe();
   }
 
   public togglePlayback() {
@@ -67,35 +62,25 @@ export class SpeakerCardComponent implements OnInit {
       this.speakerService
         .togglePlayback(this.entityId)
         .pipe(delay(1250))
-        .subscribe(() => {
-          this.valueChangeSubject$.next();
-        });
+        .subscribe();
     }
   }
 
   public nextTrack() {
-    this.speakerService
-      .nextTrack(this.entityId)
-      .subscribe(() => this.valueChangeSubject$.next());
+    this.speakerService.nextTrack(this.entityId).subscribe();
   }
 
   public prevTrack() {
-    this.speakerService
-      .prevTrack(this.entityId)
-      .subscribe(() => this.valueChangeSubject$.next());
+    this.speakerService.prevTrack(this.entityId).subscribe();
   }
 
   public onVolumeChange(value: number) {
-    const vol = value / 100;
+    const vol = value;
 
     this.speakerService
       .changeVolume(this.entityId, vol)
       .pipe(delay(1250))
-      .subscribe(() => {
-        this.volume = vol;
-        this.valueChangeSubject$.next();
-        this.cd.detectChanges();
-      });
+      .subscribe();
   }
 
   public openDetail() {
