@@ -6,11 +6,11 @@
       <div
         class="flex justify-start items-center text-2xl text-light rounded-lg aspect-square"
       >
-        <ng-icon class="" [svg]="icon"></ng-icon>
+        <ng-icon class="" [name]="icon"></ng-icon>
       </div>
       } {{ name || entity.attributes['friendly_name'] || '' }}
     </div>
-    <div class="flex gap-4 items-center pl-1">
+    <div class="flex gap-4 items-center justify-between pl-1">
       <div class="text-lg font-bold">{{ entity.state | uppercase }}</div>
       <input type="checkbox" [checked]="active" class="toggle toggle-accent" />
     </div>

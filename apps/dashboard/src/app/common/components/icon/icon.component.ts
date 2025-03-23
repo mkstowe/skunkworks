@@ -6,37 +6,47 @@ import {
   OnInit,
   ViewEncapsulation,
 } from '@angular/core';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { NgIcon } from '@ng-icons/core';
+import { Subject } from 'rxjs';
 import { colors } from '../../models/Colors';
-import { IconService } from '../../services/icon.service';
 
 @Component({
   selector: 'app-icon',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, NgIcon],
   templateUrl: './icon.component.html',
   styleUrl: './icon.component.scss',
   encapsulation: ViewEncapsulation.None,
 })
 export class IconComponent implements OnInit {
   @Input() name!: string;
-  @Input() active = true;
+  @Input() active = false;
   @Input() color?: colors = 'basic';
-  @Input() colorActive?: colors = 'primary';
+  @Input() colorActive?: colors = 'basic';
+  @Input() fillActive?: colors = 'primary';
   @Input() size: 'xs' | 'sm' | 'md' | 'lg' | 'xl' = 'md';
-  public svg?: SafeHtml;
+  @Input() valueChangeSubject$!: Subject<void>;
 
-  constructor(
-    private sanitizer: DomSanitizer,
-    private iconService: IconService,
-    private cdr: ChangeDetectorRef
-  ) {}
+  public sizeClass = 'text-lg';
+  public colorClass = 'text-basic';
+  public activeColorClass = 'fill-primary';
+  public classes = '';
+
+  constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    const path = this.name + '.svg';
-    this.iconService.getIcon(path).subscribe((icon: string) => {
-      this.svg = this.sanitizer.bypassSecurityTrustHtml(icon);
+    this.valueChangeSubject$.subscribe(() => {
       this.cdr.markForCheck();
+
+      const color = this.color === 'basic' ? 'light' : this.color;
+      const activeColor =
+        this.colorActive === 'basic' ? 'dark' : this.colorActive;
+      const activeFill =
+        this.fillActive === 'basic' ? 'light' : this.fillActive;
+
+      this.classes = `text-${this.size} text-${
+        this.active ? activeColor : color
+      } ${this.active ? 'fill-' + activeFill : ''}`;
     });
   }
 }

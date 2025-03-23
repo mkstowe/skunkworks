@@ -1,123 +1,72 @@
-@use 'tailwindcss';
-
 :host {
   display: block;
-  width: 100%;
-  height: 100%;
 }
 
-// ::ng-deep
-.icon-svg {
-  width: 100%;
-  height: 100%;
-
-  svg {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
+.fill-basic {
+  &.icon ng-icon svg path:first-child {
+    fill: var(--color-light) !important;
+    opacity: 1 !important;
   }
+}
 
-  svg path {
-    // fill: var(--color-light) !important;
-
-    &.active {
-      fill: transparent !important;
-    }
-  }
-
-  &.basic {
-    fill: var(--color-base-content) !important;
-    &.active {
-      fill: var(--color-base-100) !important;
-    }
-  }
-
-
-
-  &.active.active-basic {
-    svg path.active {
-      fill: var(--color-base-content);
-    }
-  }
-
-  &.primary {
+.fill-primary {
+  &.icon ng-icon svg path:first-child {
     fill: var(--color-primary) !important;
+    opacity: 1 !important;
   }
+}
 
-  &.active.active-primary {
-    svg path.active {
-      fill: var(--color-primary) !important;
-    }
+.fill-secondary {
+  &.icon ng-icon svg path:first-child {
+    fill: var(--color-secondary) !important;
+    opacity: 1 !important;
   }
+}
 
-  &.secondary {
-    fill: var(--color-secondary) !important; 
-  }
-
-  &.active.active-secondary {
-    svg path.active {
-      fill: var(--color-secondary) !important;
-    }
-  }
-
-  &.accent {
-    fill: var(--color-accent) !important;
-  }
-
-  &.active.active-accent {
-    svg path.active {
-      fill: var(--color-accent) !important;
-    }
-  }
-
-  &.neutral {
-    fill: var(--color-neutral) !important;
-  }
-
-  &.active.active-neutral {
-    svg path.active {
-      fill: var(--color-neutral) !important;
-    }
-  }
-
-  &.error {
+.fill-error {
+  &.icon ng-icon svg path:first-child {
     fill: var(--color-error) !important;
+    opacity: 1 !important;
   }
+}
 
-  &.active.active-error {
-    svg path.active {
-      fill: var(--color-error) !important;
-    }
+.fill-accent {
+  &.icon ng-icon svg path:first-child {
+    fill: var(--color-accent) !important;
+    opacity: 1 !important;
   }
+}
 
-  &.warning {
+.fill-neutral {
+  &.icon ng-icon svg path:first-child {
+    fill: var(--color-neutral) !important;
+    opacity: 1 !important;
+  }
+}
+
+.fill-warning {
+  &.icon ng-icon svg path:first-child {
     fill: var(--color-warning) !important;
+    opacity: 1 !important;
   }
+}
 
-  &.active.active-warning {
-    svg path.active {
-      fill: var(--color-warning) !important;
-    }
-  }
-
-  &.success {
+.fill-success {
+  &.icon ng-icon svg path:first-child {
     fill: var(--color-success) !important;
+    opacity: 1 !important;
   }
+}
 
-  &.active.active-success {
-    svg path.active {
-      fill: var(--color-success) !important;
-    }
-  }
-
-  &.info {
+.fill-info {
+  &.icon ng-icon svg path:first-child {
     fill: var(--color-info) !important;
+    opacity: 1 !important;
   }
+}
 
-  &.active.active-info {
-    svg path.active {
-      fill: var(--color-info) !important;
-    }
+.fill-transparent {
+  &.icon ng-icon svg path:first-child {
+    fill: transparent !important;
   }
 }

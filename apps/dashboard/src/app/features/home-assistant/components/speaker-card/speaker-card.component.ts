@@ -55,7 +55,7 @@ export class SpeakerCardComponent implements OnInit {
   }
 
   public turnOn() {
-    this.speakerService.turnOn(this.entityId).subscribe(() => {
+    this.speakerService.turnOn(this.entityId).pipe(delay(1250)).subscribe(() => {
       this.valueChangeSubject$.next();
     });
   }

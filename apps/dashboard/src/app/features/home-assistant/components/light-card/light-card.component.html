@@ -1,22 +1,22 @@
 @if (entity) {
-<div class="bg-background flex gap-8 p-3 items-center h-full">
+<div class="bg-background flex gap-8 items-center h-full">
   @if(icon) {
   <button
     [class.active]="active"
-    [class.bg-light]="active"
-    [class.bg-dark]="!active"
+    [class]="active ? 'bg-light' : 'bg-dark'"
     class="btn bg-dark w-18 h-18 rounded-2xl border-2 border-light"
     (click)="toggleState()"
   >
     <div
-      class="flex justify-center items-center text-dark text-4xl w-full h-full"
+      [class]="active ? 'text-dark' : 'text-light'"
+      class="flex justify-center items-center text-4xl w-full h-full"
     >
-      <ng-icon [svg]="icon"></ng-icon>
+      <ng-icon [name]="icon"></ng-icon>
     </div>
   </button>
   }
 
-  <div class="flex w-full flex-col items-center gap-1 mt-2">
+  <div class="flex w-full flex-col items-start gap-1 my-2">
     <div
       class="info text-lg font-bold w-full flex justify-between items-center px-2"
     >
@@ -43,11 +43,12 @@
       </div>
     </div>
     <app-progress-bar
+    class="w-full"
       [min]="0"
       [max]="255"
       [value]="brightness || 0"
       [step]="255 / 20"
-      dotSize="xl"
+      dotSize="md"
       dotSpacing="md"
       color="primary"
       [update$]="valueChangeSubject$"

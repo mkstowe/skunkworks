@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { NgIcon, provideIcons } from '@ng-icons/core';
-import { dripLightbulb } from '@ng-icons/dripicons';
+import { NgIcon } from '@ng-icons/core';
 import { HassEntity } from 'home-assistant-js-websocket';
 import { Subject } from 'rxjs';
 import { sizes } from '../../../../common/models/Sizes';
@@ -13,7 +12,6 @@ import { HassService } from '../../services/hass.service';
   imports: [CommonModule, NgIcon],
   templateUrl: './switch-card.component.html',
   styleUrl: './switch-card.component.scss',
-  providers: [provideIcons({ dripLightbulb })],
 })
 export class SwitchCardComponent implements OnInit {
   @Input() entityId!: string;

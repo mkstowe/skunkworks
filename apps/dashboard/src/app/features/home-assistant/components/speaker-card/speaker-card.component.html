@@ -1,5 +1,5 @@
 @if (entity) {
-<div class="bg-background flex gap-8 p-3 items-center h-full">
+<div class="bg-background flex gap-8 items-center h-full">
   @if(icon) {
   <button
     [class.active]="active"
@@ -11,12 +11,12 @@
       class="flex justify-center items-center text-4xl w-full h-full"
       [class]="active ? 'text-dark' : 'text-light'"
     >
-      <ng-icon [svg]="icon"></ng-icon>
+      <ng-icon [name]="icon"></ng-icon>
     </div>
   </button>
   }
 
-  <div class="flex w-full flex-col items-center gap-1 mt-2">
+  <div class="flex w-full flex-col items-center gap-1 my-2">
     <div
       class="info text-lg font-bold w-full flex justify-between items-center px-2"
     >
@@ -46,7 +46,7 @@
         [max]="100"
         [value]="valueAsPercentage(volume || 0)"
         [step]="100 / 18"
-        dotSize="md"
+        dotSize="sm"
         dotSpacing="sm"
         color="primary"
         [update$]="valueChangeSubject$"

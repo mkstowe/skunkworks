@@ -53,7 +53,7 @@ export class LightCardComponent implements OnInit {
   public onBrightnessChange(value: number) {
     this.lightService
       .changeBrightness(this.entityId, value)
-      .pipe(delay(1250))
+      .pipe(delay(1550))
       .subscribe(() => {
         this.brightness = value;
         this.valueChangeSubject$.next();

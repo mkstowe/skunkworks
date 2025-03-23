@@ -1,7 +1,3 @@
-<div
-  class="icon-svg {{ color }} {{ 'active-' + colorActive }} {{
-    'size-' + size
-  }}"
-  [class.active]="active"
-  [innerHTML]="svg"
-></div>
+<div [class]="classes" class="icon flex">
+  <ng-icon [name]="name"></ng-icon>
+</div>

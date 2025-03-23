@@ -46,16 +46,16 @@ export class ProgressBarComponent implements OnInit {
         this.dotPixels = 6;
         break;
       case 'sm':
-        this.dotPixels = 8;
-        break;
-      case 'md':
         this.dotPixels = 10;
         break;
-      case 'lg':
+      case 'md':
         this.dotPixels = 12;
         break;
-      case 'xl':
+      case 'lg':
         this.dotPixels = 16;
+        break;
+      case 'xl':
+        this.dotPixels = 18;
         break;
     }
 
@@ -67,7 +67,7 @@ export class ProgressBarComponent implements OnInit {
         this.dotGap = '0.25rem';
         break;
       case 'md':
-        this.dotGap = '0.5rem';
+        this.dotGap = '0.75rem';
         break;
       case 'lg':
         this.dotGap = '1rem';
