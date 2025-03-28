@@ -3,9 +3,11 @@
         "daisyui",
         "dripicons",
         "Hass",
+        "hvac",
         "kanel",
         "kysely",
         "prefersdark",
-        "supabase"
+        "supabase",
+        "titlecase"
     ]
 }
