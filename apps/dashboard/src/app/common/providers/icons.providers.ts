@@ -1,19 +1,22 @@
 import { provideIcons } from '@ng-icons/core';
 import {
+  phosphorLightbulbDuotone,
+  phosphorSpeakerHifiDuotone,
+} from '@ng-icons/phosphor-icons/duotone';
+import {
   phosphorLightbulb,
+  phosphorMinus,
   phosphorPause,
   phosphorPlay,
+  phosphorPlus,
   phosphorSkipBack,
   phosphorSkipForward,
   phosphorSliders,
   phosphorSpeakerHifi,
+  phosphorThermometerCold,
+  phosphorThermometerHot,
+  phosphorThermometerSimple,
 } from '@ng-icons/phosphor-icons/regular';
-import {
-  phosphorSlidersDuotone,
-  phosphorPlayDuotone,
-  phosphorLightbulbDuotone,
-  phosphorSpeakerHifiDuotone,
-} from '@ng-icons/phosphor-icons/duotone';
 
 export const appIconProviders = provideIcons({
   lightbulb: phosphorLightbulb,
@@ -25,4 +28,9 @@ export const appIconProviders = provideIcons({
   pause: phosphorPause,
   skipForward: phosphorSkipForward,
   skipBack: phosphorSkipBack,
+  thermometer: phosphorThermometerSimple,
+  thermometerHot: phosphorThermometerHot,
+  thermometerCold: phosphorThermometerCold,
+  plus: phosphorPlus,
+  minus: phosphorMinus,
 });

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { NgIcon } from '@ng-icons/core';
-import { delay, Subject } from 'rxjs';
+import { delay, Subject, take } from 'rxjs';
 import { ProgressBarComponent } from '../../../../common/components/progress-bar/progress-bar.component';
 import { HassEntity } from '../../models/Entity';
 import { HassService } from '../../services/hass.service';
@@ -42,14 +42,17 @@ export class LightCardComponent implements OnInit {
   }
 
   public toggleState() {
-    this.lightService.toggleState(this.entityId).pipe(delay(1550)).subscribe();
+    this.lightService
+      .toggleState(this.entityId)
+      .pipe(delay(1550), take(1))
+      .subscribe();
   }
 
   public onBrightnessChange(value: number) {
     const newBrightness = value * 255;
     this.lightService
       .changeBrightness(this.entityId, newBrightness)
-      .pipe(delay(1550))
+      .pipe(delay(1550), take(1))
       .subscribe();
   }
 
