@@ -33,7 +33,7 @@ export class LightCardComponent implements OnInit {
   public ngOnInit(): void {
     this.hassService.entities$.subscribe((res: any) => {
       this.entity = res[this.entityId];
-      this.brightness = (this.entity?.attributes['brightness'] as number) || 0;
+      this.brightness = (this.entity?.attributes['brightness'] as number) ?? 0;
       this.brightnessProgress = Math.round(
         (this.brightness / 255) * this.numDots
       );

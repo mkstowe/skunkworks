@@ -1,13 +1,13 @@
-import { Kysely, PostgresDialect } from "kysely";
-import Database from "./schema/Database";
-import { Pool } from "pg";
-import { createClient } from "@supabase/supabase-js";
+import { Kysely, PostgresDialect } from 'kysely';
+import Database from './schema/Database';
+import { Pool } from 'pg';
+import { createClient } from '@supabase/supabase-js';
 
 export const db = new Kysely<Database>({
   dialect: new PostgresDialect({
     pool: new Pool({
       connectionString:
-        process.env.ENV === "test"
+        process.env.ENV === 'test'
           ? process.env.TEST_DATABASE_URL
           : process.env.DATABASE_URL,
     }),
@@ -15,6 +15,6 @@ export const db = new Kysely<Database>({
 });
 
 export const supabase = createClient(
-  process.env.SUPABASE_URL || '',
-  process.env.SUPABASE_KEY || ''
+  process.env.SUPABASE_URL ?? '',
+  process.env.SUPABASE_KEY ?? ''
 );

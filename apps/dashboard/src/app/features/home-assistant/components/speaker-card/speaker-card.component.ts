@@ -36,10 +36,11 @@ export class SpeakerCardComponent implements OnInit {
   public ngOnInit(): void {
     this.hassService.entities$.subscribe((res: any) => {
       this.entity = res[this.entityId];
-      this.volume =
-        +(this.entity?.attributes['volume_level'] as number)?.toFixed(2) || 0;
+      this.volume = +(
+        this.entity?.attributes['volume_level'] as number
+      )?.toFixed(2);
       this.volumeProgress = this.volume * this.numDots;
-      this.active = this.onStates.includes(this.entity?.state || '');
+      this.active = this.onStates.includes(this.entity?.state ?? '');
       this.playing = this.entity?.state === 'playing';
     });
   }

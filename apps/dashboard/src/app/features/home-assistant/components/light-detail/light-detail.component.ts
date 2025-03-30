@@ -1,5 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
 import { RGBA } from 'ngx-color';
 import { Subject } from 'rxjs';
 import { ColorPickerComponent } from '../../../../common/components/color-picker/color-picker.component';
@@ -12,7 +20,7 @@ import { LightService } from '../../services/light.service';
   templateUrl: './light-detail.component.html',
   styleUrl: './light-detail.component.scss',
 })
-export class LightDetailComponent implements OnInit {
+export class LightDetailComponent implements OnInit, OnChanges {
   @Input() openModalSubject$!: Subject<void>;
   @Input() entity!: HassEntity;
   public valueChangeSubject$ = new Subject<void>();
@@ -27,13 +35,17 @@ export class LightDetailComponent implements OnInit {
     this.openModalSubject$.subscribe(() => {
       this.modal.nativeElement.showModal();
     });
+  }
 
-    this.brightness = (this.entity?.attributes['brightness'] as number) || 0;
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['entity'] && this.entity) {
+      this.brightness = (this.entity?.attributes['brightness'] as number) ?? 0;
 
-    const c = (this.entity?.attributes['rgb_color'] as number[]) || [
-      255, 255, 255,
-    ];
-    this.color = { r: c[0], g: c[1], b: c[2], a: 255 };
+      const c = (this.entity?.attributes['rgb_color'] as number[]) ?? [
+        255, 255, 255,
+      ];
+      this.color = { r: c[0], g: c[1], b: c[2], a: 255 };
+    }
   }
 
   public onColorChange(e: RGBA) {

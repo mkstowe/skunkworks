@@ -32,12 +32,12 @@ export class ThermostatCardComponent implements OnInit {
     this.hassService.entities$.subscribe((res: any) => {
       this.entity = res[this.entityId];
       this.temp =
-        (this.entity?.attributes['current_temperature'] as number) || 0;
+        (this.entity?.attributes['current_temperature'] as number) ?? 0;
       if (!this.targetTemp) {
         this.targetTemp =
-          (this.entity?.attributes['temperature'] as number) || 0;
+          (this.entity?.attributes['temperature'] as number) ?? 0;
       }
-      this.mode = (this.entity?.attributes['hvac_action'] as string) || '';
+      this.mode = (this.entity?.attributes['hvac_action'] as string) ?? '';
     });
   }
 

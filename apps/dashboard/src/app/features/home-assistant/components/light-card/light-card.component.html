@@ -27,7 +27,7 @@
         <div class="brightness m-auto">
           {{
             brightness && brightness > 0
-              ? valueAsPercentage(brightness || 0) + '%'
+              ? valueAsPercentage(brightness) + '%'
               : 'Off'
           }}
         </div>
@@ -43,7 +43,7 @@
       </div>
     </div>
     <app-progress-bar
-      [value]="brightnessProgress || 0"
+      [value]="brightnessProgress"
       [total]="numDots"
       [interactive]="true"
       activeColor="bg-primary"

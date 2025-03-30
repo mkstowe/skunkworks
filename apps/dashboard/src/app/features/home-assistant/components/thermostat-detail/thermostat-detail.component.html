@@ -18,8 +18,12 @@
     <h3 class="text-lg font-bold pb-4">
       {{ entity.attributes['friendly_name'] }}
     </h3>
-    <div class="p-6 flex flex-col gap-8">
-      <div class="flex justify-end"></div>
+    <div class="p-6 flex flex-col gap-8 justify-center items-center">
+      <app-circular-slider
+        label="HeatPump"
+        [min]="0"
+        [max]="100"
+      ></app-circular-slider>
     </div>
     } @else {
     <p class="py-4">Entity not found</p>
