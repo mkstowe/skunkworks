@@ -1,18 +1,9 @@
-<div class="p-8 h-full flex flex-col gap-4 w-1/2">
-  <app-thermostat-card entityId="climate.thermostat"></app-thermostat-card>
+<nav class="tabs flex gap-8 mt-4 mb-8">
+  <a routerLink="living-room" routerLinkActive="btn-primary" class="btn"
+    >Living Room</a
+  >
+  <a routerLink="office" routerLinkActive="btn-primary" class="btn">Office</a>
+  <a routerLink="bedroom" routerLinkActive="btn-primary" class="btn">Bedroom</a>
+</nav>
 
-  <app-light-card entityId="light.office" icon="lightbulb"></app-light-card>
-
-  <app-speaker-card
-    entityId="media_player.office_speaker"
-    icon="speaker"
-  ></app-speaker-card>
-
-  <div class="flex">
-    <app-switch-card
-      class="shrink"
-      entityId="light.office"
-      icon="lightbulb"
-    ></app-switch-card>
-  </div>
-</div>
+<router-outlet></router-outlet>

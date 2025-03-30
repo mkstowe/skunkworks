@@ -1,8 +1,10 @@
-<app-navbar class="fixed top-0 w-full z-50 h-16"></app-navbar>
-<main class="content flex-1 pt-16 h-full">
-  <div class="flex h-full">
-    <div class="content grow">
-      <router-outlet></router-outlet>
+<div class="flex flex-col h-full py-4 px-8">
+  <main class="content flex-1 grow">
+    <div class="flex h-full">
+      <div class="content grow">
+        <router-outlet></router-outlet>
+      </div>
     </div>
-  </div>
-</main>
+  </main>
+  <app-navbar class="w-full h-16 rounded-2xl bg-neutral mb-4"></app-navbar>
+</div>

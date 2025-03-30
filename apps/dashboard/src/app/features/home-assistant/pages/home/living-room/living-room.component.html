@@ -1,0 +1,20 @@
+<div class="w-[590px] flex flex-col gap-8">
+
+    <app-thermostat-card entityId="climate.thermostat"></app-thermostat-card>
+    
+    <app-light-card entityId="light.office" icon="lightbulb"></app-light-card>
+    
+    <app-speaker-card
+    entityId="media_player.office_speaker"
+    icon="speaker"
+    ></app-speaker-card>
+    
+    <div class="flex">
+        <app-switch-card
+        class="shrink"
+        entityId="light.office"
+        icon="lightbulb"
+        ></app-switch-card>
+    </div>
+</div>
+
