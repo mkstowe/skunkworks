@@ -1,0 +1,14 @@
+<div class="slider-wrapper">
+  <canvas
+    #canvas
+    width="200"
+    height="200"
+    (mousedown)="onMouseDown($event)"
+    (mousemove)="onMouseMove($event)"
+  >
+  </canvas>
+  <div class="controls">
+    <button (click)="decrement()">−</button>
+    <button (click)="increment()">+</button>
+  </div>
+</div>

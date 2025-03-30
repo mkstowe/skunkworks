@@ -1,0 +1,63 @@
+.slider-wrapper {
+  text-align: center;
+  font-family: sans-serif;
+  color: #fff;
+
+  h3 {
+    margin: 0 0 10px;
+    font-size: 1.2rem;
+  }
+
+  canvas {
+    cursor: pointer;
+    margin: 0 auto;
+    display: block;
+    background: transparent;
+  }
+
+  .value-display {
+    position: relative;
+    margin-top: -70px;
+    pointer-events: none;
+
+    .status {
+      color: #ff7b3a;
+      font-weight: bold;
+      font-size: 1rem;
+    }
+
+    .main {
+      font-size: 3rem;
+      font-weight: bold;
+
+      .unit {
+        font-size: 1.2rem;
+        vertical-align: top;
+        margin-left: 2px;
+      }
+    }
+
+    .current {
+      color: #ff7b3a;
+      font-size: 0.9rem;
+    }
+  }
+
+  .controls {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+
+    button {
+      font-size: 1.5rem;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: 2px solid #ccc;
+      background: #fff;
+      color: #333;
+      cursor: pointer;
+    }
+  }
+}
