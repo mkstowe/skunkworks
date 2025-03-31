@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-room-card',
@@ -8,6 +8,13 @@ import { Component } from '@angular/core';
   styleUrl: './room-card.component.scss',
 })
 export class RoomCardComponent {
+  @Input() title!: string;
+  @Input() roomName!: string;
+  @Input() icon?: string;
+  @Input() color?: string;
+  @Input() actions?: any[];
+
+
   // TODO: Room name + icon
   // TODO: Temp + Humidity + Occupied
   // TODO: Toggle lights

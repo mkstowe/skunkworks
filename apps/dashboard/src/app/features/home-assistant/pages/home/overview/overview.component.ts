@@ -4,11 +4,12 @@ import { ThermostatCardComponent } from '../../../components/thermostat-card/the
 import { SpeakerCardComponent } from '../../../components/speaker-card/speaker-card.component';
 import { LightCardComponent } from '../../../components/light-card/light-card.component';
 import { SwitchCardComponent } from '../../../components/switch-card/switch-card.component';
+import { RoomCardComponent } from "../../../components/room-card/room-card.component";
 
 @Component({
   selector: 'app-living-room',
-  imports: [CommonModule, ThermostatCardComponent, SpeakerCardComponent, LightCardComponent, SwitchCardComponent],
-  templateUrl: './living-room.component.html',
-  styleUrl: './living-room.component.scss',
+  imports: [CommonModule, ThermostatCardComponent, SpeakerCardComponent, LightCardComponent, SwitchCardComponent, RoomCardComponent],
+  templateUrl: './overview.component.html',
+  styleUrl: './overview.component.scss',
 })
-export class LivingRoomComponent {}
+export class OverviewComponent {}

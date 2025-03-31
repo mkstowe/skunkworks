@@ -4,6 +4,7 @@ import {
   phosphorSpeakerHifiDuotone,
 } from '@ng-icons/phosphor-icons/duotone';
 import {
+  phosphorDesktopTower,
   phosphorLightbulb,
   phosphorMinus,
   phosphorPause,
@@ -33,4 +34,5 @@ export const appIconProviders = provideIcons({
   thermometerCold: phosphorThermometerCold,
   plus: phosphorPlus,
   minus: phosphorMinus,
+  computer: phosphorDesktopTower
 });
