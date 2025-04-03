@@ -1,7 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject, retry, shareReplay, switchMap, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  distinctUntilChanged,
+  map,
+  Observable,
+  retry,
+  shareReplay,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { environment } from '../../../../environments/environment';
+import { HassEntity } from '../models/Entity';
 import { ServiceCall } from '../models/ServiceCall';
 
 @Injectable({
@@ -16,6 +26,7 @@ export class HassService implements OnDestroy {
   private entityState$ = new BehaviorSubject<Record<string, any>>({});
   private _entities$ = new BehaviorSubject({});
   private _refresh$ = new BehaviorSubject<null>(null);
+  private onStates = ['on', 'playing', 'paused', 'idle', 'Detected'];
 
   constructor(private http: HttpClient) {
     this.connectWebsocket();
@@ -37,6 +48,13 @@ export class HassService implements OnDestroy {
     );
   }
 
+  public getEntity$(entityId: string): Observable<HassEntity | null> {
+    return this.entities$.pipe(
+      map((entities: any) => entities?.[entityId] ?? null),
+      distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
+    );
+  }
+
   public callService(service: ServiceCall) {
     service.type = 'call_service';
 
@@ -47,6 +65,11 @@ export class HassService implements OnDestroy {
     return this.http
       .post(`${this.apiUrl}/entity/service`, service)
       .pipe(tap(() => this._refresh$.next(null)));
+  }
+
+  public isActive(entity: HassEntity | undefined | null): boolean {
+    if (!entity) return false;
+    return this.onStates.includes(entity.state);
   }
 
   private connectWebsocket() {
