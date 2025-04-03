@@ -40,7 +40,7 @@ export class SpeakerCardComponent implements OnInit {
         this.entity?.attributes['volume_level'] as number
       )?.toFixed(2);
       this.volumeProgress = this.volume * this.numDots;
-      this.active = this.onStates.includes(this.entity?.state ?? '');
+      this.active = this.hassService.isActive(this.entity);
       this.playing = this.entity?.state === 'playing';
     });
   }

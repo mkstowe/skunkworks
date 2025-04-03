@@ -1,10 +1,19 @@
-<div class="flex flex-col h-full py-4 px-8">
-  <main class="content flex-1 grow">
-    <div class="flex h-full">
-      <div class="content grow">
-        <router-outlet></router-outlet>
-      </div>
-    </div>
+<div class="flex flex-col min-h-screen">
+  <!-- Scrollable content area -->
+  <div
+    class="pointer-events-none fixed bottom-16 left-0 w-full h-16 bg-gradient-to-b from-transparent to-background z-5"
+  ></div>
+  <main class="flex-1 overflow-y-auto px-8 pt-4 pb-24">
+    <router-outlet></router-outlet>
   </main>
-  <app-navbar class="w-full h-16 rounded-2xl bg-neutral mb-4"></app-navbar>
+
+  <!-- Fixed Navbar -->
+  <div
+    class="pointer-events-none fixed bottom-16 left-0 w-full h-16 z-10 bg-gradient-to-b from-transparent to-background"
+  ></div>
+  <div class="fixed bottom-0 px-4 pb-4 z-10 bg-background w-full">
+    <app-navbar
+      class="w-full h-16 rounded-2xl bg-neutral shadow-md"
+    ></app-navbar>
+  </div>
 </div>

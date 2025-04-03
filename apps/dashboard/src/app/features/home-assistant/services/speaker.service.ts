@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HassService } from './hass.service';
+import { EMPTY, map, switchMap, take } from 'rxjs';
 import { ServiceCall } from '../models/ServiceCall';
+import { HassService } from './hass.service';
 
 @Injectable({
   providedIn: 'root',
@@ -75,5 +76,36 @@ export class SpeakerService {
       },
     };
     return this.hass.callService(service);
+  }
+
+  public callRoomService(entityId: string) {
+    this.hass
+      .getEntity$(entityId)
+      .pipe(
+        map((entity) => {
+          if (!entity) return null;
+          const active = this.hass.isActive(entity);
+          return {
+            domain: active ? 'media_player' : 'music_assistant',
+            service: active ? 'media_play_pause' : 'play_media',
+            service_data: active
+              ? null
+              : {
+                  media_id:
+                    'https://open.spotify.com/playlist/4vNldb5p8tQ9RmX7XSaTIM',
+                  media_type: 'playlist',
+                },
+            target: {
+              entity_id: entityId,
+            },
+          };
+        }),
+        switchMap((service) => {
+          if (!service) return EMPTY;
+          return this.hass.callService(service as ServiceCall);
+        }),
+        take(1)
+      )
+      .subscribe();
   }
 }

@@ -1,24 +1,50 @@
-<div class="w-[590px] flex flex-col gap-8">
+<div class="w-full flex flex-col gap-8 pb-8">
+  <div class="w-[600px]">
+    <!-- <app-thermostat-card class="w-full h-18" entityId="climate.thermostat"></app-thermostat-card> -->
 
-    <app-thermostat-card entityId="climate.thermostat"></app-thermostat-card>
-    
-    <app-light-card entityId="light.office" icon="lightbulb"></app-light-card>
-    
-    <!-- <app-speaker-card
-    entityId="media_player.office_speaker"
-    icon="speaker"
+    <app-light-card
+      class="w-full"
+      entityId="light.office"
+      icon="lightbulb"
+    ></app-light-card>
+
+    <app-speaker-card
+      class="w-full"
+      entityId="media_player.office_speaker"
+      icon="speaker"
     ></app-speaker-card>
-    
-    <div class="flex">
+  </div>
+  <!-- <div class="flex">
         <app-switch-card
         class="shrink"
         entityId="light.office"
         icon="lightbulb"
         ></app-switch-card>
     </div> -->
-    
-    <div class="rooms flex">
-        <app-room-card class="w-96 h-64" title="Office" roomName="office" color="primary" icon="computer"></app-room-card>
-    </div>
-</div>
 
+  <div class="rooms flex flex-wrap gap-8">
+    <!-- <app-room-card
+      class="w-96 h-64"
+      title="Office"
+      roomName="office"
+      color="primary"
+      icon="computer"
+      temperatureEntityId="climate.thermostat"
+      humidityEntityId="climate.thermostat"
+    ></app-room-card> -->
+
+    @for (room of roomConfigs; track room.title) {
+    <app-room-card
+      class="w-80 h-64"
+      [title]="room.title"
+      [roomName]="room.roomName"
+      [color]="room.color"
+      [icon]="room.icon"
+      [temperatureEntityId]="room.temperatureEntityId"
+      [humidityEntityId]="room.humidityEntityId"
+      [occupiedEntityId]="room.occupiedEntityId"
+      [actions]="room.actions"
+    ></app-room-card>
+    }
+  </div>
+</div>

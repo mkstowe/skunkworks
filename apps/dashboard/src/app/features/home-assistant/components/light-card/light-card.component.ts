@@ -37,7 +37,7 @@ export class LightCardComponent implements OnInit {
       this.brightnessProgress = Math.round(
         (this.brightness / 255) * this.numDots
       );
-      this.active = this.entity?.state === 'on';
+      this.active = this.hassService.isActive(this.entity);
     });
   }
 

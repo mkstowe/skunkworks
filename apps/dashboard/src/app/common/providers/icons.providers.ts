@@ -4,12 +4,18 @@ import {
   phosphorSpeakerHifiDuotone,
 } from '@ng-icons/phosphor-icons/duotone';
 import {
+  phosphorBed,
+  phosphorCouch,
   phosphorDesktopTower,
+  phosphorForkKnife,
+  phosphorKnife,
   phosphorLightbulb,
   phosphorMinus,
   phosphorPause,
+  phosphorPencilRuler,
   phosphorPlay,
   phosphorPlus,
+  phosphorQuestion,
   phosphorSkipBack,
   phosphorSkipForward,
   phosphorSliders,
@@ -17,11 +23,17 @@ import {
   phosphorThermometerCold,
   phosphorThermometerHot,
   phosphorThermometerSimple,
+  phosphorToiletPaper,
+  phosphorVectorThree,
 } from '@ng-icons/phosphor-icons/regular';
+import { phosphorLightbulbBold } from '@ng-icons/phosphor-icons/bold';
+import { phosphorLightbulbFill } from '@ng-icons/phosphor-icons/fill';
 
 export const appIconProviders = provideIcons({
   lightbulb: phosphorLightbulb,
   lightbulbDuo: phosphorLightbulbDuotone,
+  lightbulbBold: phosphorLightbulbBold,
+  lightbulbFill: phosphorLightbulbFill,
   speaker: phosphorSpeakerHifi,
   speakerDuo: phosphorSpeakerHifiDuotone,
   sliders: phosphorSliders,
@@ -34,5 +46,13 @@ export const appIconProviders = provideIcons({
   thermometerCold: phosphorThermometerCold,
   plus: phosphorPlus,
   minus: phosphorMinus,
-  computer: phosphorDesktopTower
+  computer: phosphorDesktopTower,
+  couch: phosphorCouch,
+  toiletPaper: phosphorToiletPaper,
+  bed: phosphorBed,
+  forkKnife: phosphorForkKnife,
+  knife: phosphorKnife,
+  pencilRuler: phosphorPencilRuler,
+  question: phosphorQuestion,
+  vectors: phosphorVectorThree,
 });

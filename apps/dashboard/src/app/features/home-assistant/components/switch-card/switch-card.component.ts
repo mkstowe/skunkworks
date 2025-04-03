@@ -27,7 +27,7 @@ export class SwitchCardComponent implements OnInit {
   ngOnInit(): void {
     this.hassService.entities$.subscribe((res: any) => {
       this.entity = res[this.entityId];
-      this.active = this.entity?.state === 'on';
+      this.active = this.hassService.isActive(this.entity);
     });
   }
 
