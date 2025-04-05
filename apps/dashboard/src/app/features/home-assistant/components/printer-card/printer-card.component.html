@@ -1,1 +1,42 @@
-<p>printer-card works!</p>
+<div class="bg-background flex gap-8 items-center h-full w-full">
+  <div class="bg-dark aspect-square h-18 rounded-2xl bg-dark cursor-default">
+    <div
+      class="flex justify-center items-center text-4xl w-full h-full text-light"
+    >
+      <ng-icon name="vectors"></ng-icon>
+    </div>
+  </div>
+
+  <div class="flex w-full flex-col items-start gap-1 my-2 px-2">
+    <div class="info w-full flex justify-between items-center">
+      <div class="flex items-center gap-4 w-full justify-between">
+        <p class="text-lg font-bold">{{ details.stage | titlecase }}</p>
+        <p>{{ details.fileName | truncate : 20 }}</p>
+        <div class="detail-button">
+          <button
+            class="btn btn-circle btn-ghost text-3xl hover:btn-primary"
+            (click)="openDetail()"
+          >
+            <ng-icon name="sliders"></ng-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex gap-4 w-full items-center justify-end">
+      <p class="grow">
+        Layer {{ details.currLayer }} / {{ details.totalLayers }} ({{
+          details.printProgress
+        }}%)
+      </p>
+      <p>{{ elapsedTime | formatDuration : 'H M' }} Elapsed</p>
+      <p>{{ details.remainingTime | formatDuration : 'H M' }} Remaining</p>
+      <p>{{ details.endTime | date : 'shortTime' }}</p>
+    </div>
+  </div>
+</div>
+
+<app-printer-detail
+  [openModalSubject$]="openDetailSubject$"
+  [details]="details"
+></app-printer-detail>

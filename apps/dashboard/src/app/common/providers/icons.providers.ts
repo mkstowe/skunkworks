@@ -1,10 +1,13 @@
 import { provideIcons } from '@ng-icons/core';
+import { phosphorLightbulbBold } from '@ng-icons/phosphor-icons/bold';
 import {
   phosphorLightbulbDuotone,
   phosphorSpeakerHifiDuotone,
 } from '@ng-icons/phosphor-icons/duotone';
+import { phosphorLightbulbFill } from '@ng-icons/phosphor-icons/fill';
 import {
   phosphorBed,
+  phosphorBroom,
   phosphorCouch,
   phosphorDesktopTower,
   phosphorForkKnife,
@@ -26,8 +29,6 @@ import {
   phosphorToiletPaper,
   phosphorVectorThree,
 } from '@ng-icons/phosphor-icons/regular';
-import { phosphorLightbulbBold } from '@ng-icons/phosphor-icons/bold';
-import { phosphorLightbulbFill } from '@ng-icons/phosphor-icons/fill';
 
 export const appIconProviders = provideIcons({
   lightbulb: phosphorLightbulb,
@@ -55,4 +56,5 @@ export const appIconProviders = provideIcons({
   pencilRuler: phosphorPencilRuler,
   question: phosphorQuestion,
   vectors: phosphorVectorThree,
+  broom: phosphorBroom,
 });

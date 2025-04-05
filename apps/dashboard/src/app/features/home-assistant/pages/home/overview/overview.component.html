@@ -1,15 +1,20 @@
 <div class="w-full flex flex-col gap-8 pb-8">
   <div class="w-[600px]">
+    <app-smart-vac-card
+      vacuumName="caruthers"
+      class="h-24 w-full"
+    ></app-smart-vac-card>
+    <!-- <app-printer-card class="h-24 w-full"></app-printer-card> -->
     <!-- <app-thermostat-card class="w-full h-18" entityId="climate.thermostat"></app-thermostat-card> -->
 
     <app-light-card
-      class="w-full"
+      class="w-full h-24"
       entityId="light.office"
       icon="lightbulb"
     ></app-light-card>
 
     <app-speaker-card
-      class="w-full"
+      class="w-full h-24"
       entityId="media_player.office_speaker"
       icon="speaker"
     ></app-speaker-card>
