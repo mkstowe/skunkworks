@@ -11,8 +11,8 @@ on:
       - 'apps/dashboard-server/Dockerfile'
       - 'docker-compose.yml'
       - '.github/workflows/dashboard.yml'
-      
-  workflow_dispatch:    
+
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -36,9 +36,15 @@ jobs:
 
       - name: Install dependencies (optional)
         run: pnpm install
-        
-      - name: List files before deploy
-        run: ls -R
+
+      - name: Debug SCP paths
+        run: |
+          echo "Listing apps/dashboard:"
+          ls -l apps/dashboard
+          echo "Listing apps/dashboard-server:"
+          ls -l apps/dashboard-server
+          echo "Looking for docker-compose.yml:"
+          ls -l docker-compose.yml
 
       - name: Copy repo to server
         uses: appleboy/scp-action@v0.1.4
@@ -47,8 +53,8 @@ jobs:
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_KEY }}
           source: |
-            ./apps/dashboard/Dockerfile
-            ./apps/dashboard-server/Dockerfile
+            apps/dashboard/Dockerfile
+            apps/dashboard-server/Dockerfile
             docker-compose.yml
           target: ${{ secrets.DEPLOY_PATH }}
 
