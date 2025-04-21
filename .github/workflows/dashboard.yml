@@ -59,6 +59,7 @@ jobs:
           host: ${{ secrets.DEPLOY_HOST }}
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_KEY }}
+          port: 2222
           source: deploy.tar.gz
           target: ${{ secrets.DEPLOY_PATH }}
           strip_components: 0
