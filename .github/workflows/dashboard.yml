@@ -10,7 +10,7 @@ on:
       - 'apps/dashboard/Dockerfile'
       - 'apps/dashboard-server/Dockerfile'
       - 'docker-compose.yml'
-      - '.github/workflows/deploy-dashboard.yml'
+      - '.github/workflows/dashboard.yml'
 
   workflow_dispatch:
 
@@ -65,7 +65,6 @@ jobs:
           overwrite: true
           rm: true
           debug: true
-          timeout: 60
 
       - name: Extract and restart Docker containers
         uses: appleboy/ssh-action@v1.0.3
