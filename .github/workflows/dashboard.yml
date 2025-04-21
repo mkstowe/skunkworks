@@ -10,6 +10,9 @@ on:
       - 'apps/dashboard/Dockerfile'
       - 'apps/dashboard-server/Dockerfile'
       - 'docker-compose.yml'
+      - '.github/workflows/dashboard.yml'
+      
+  workflow_dispatch:    
 
 jobs:
   deploy:
