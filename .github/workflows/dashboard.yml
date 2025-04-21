@@ -44,8 +44,8 @@ jobs:
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_KEY }}
           source: |
-            apps/dashboard/
-            apps/dashboard-server/
+            apps/dashboard/Dockerfile
+            apps/dashboard-server/Dockerfile
             docker-compose.yml
           target: ${{ secrets.DEPLOY_PATH }}
 
