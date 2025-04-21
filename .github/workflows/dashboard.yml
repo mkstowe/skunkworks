@@ -10,7 +10,7 @@ on:
       - 'apps/dashboard/Dockerfile'
       - 'apps/dashboard-server/Dockerfile'
       - 'docker-compose.yml'
-      - '.github/workflows/dashboard.yml'
+      - '.github/workflows/deploy-dashboard.yml'
 
   workflow_dispatch:
 
@@ -34,31 +34,40 @@ jobs:
         with:
           version: 10
 
-      - name: Install dependencies (optional)
+      - name: Install dependencies
         run: pnpm install
 
-      - name: Debug SCP paths
+      - name: Debug file presence
         run: |
-          echo "Listing apps/dashboard:"
-          ls -l apps/dashboard
-          echo "Listing apps/dashboard-server:"
-          ls -l apps/dashboard-server
-          echo "Looking for docker-compose.yml:"
+          echo "==> apps/dashboard/"
+          ls -lh apps/dashboard
+          echo "==> apps/dashboard-server/"
+          ls -lh apps/dashboard-server
+          echo "==> docker-compose.yml"
           ls -l docker-compose.yml
 
-      - name: Copy repo to server
+      - name: Create deployment tarball
+        run: |
+          tar -czf deploy.tar.gz \
+            apps/dashboard/Dockerfile \
+            apps/dashboard-server/Dockerfile \
+            docker-compose.yml
+
+      - name: Copy tarball to server
         uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_KEY }}
-          source: |
-            apps/dashboard/Dockerfile
-            apps/dashboard-server/Dockerfile
-            docker-compose.yml
+          source: deploy.tar.gz
           target: ${{ secrets.DEPLOY_PATH }}
+          strip_components: 0
+          overwrite: true
+          rm: true
+          debug: true
+          timeout: 60
 
-      - name: Restart Docker containers
+      - name: Extract and restart Docker containers
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.DEPLOY_HOST }}
@@ -66,5 +75,7 @@ jobs:
           key: ${{ secrets.DEPLOY_KEY }}
           script: |
             cd ${{ secrets.DEPLOY_PATH }}
+            tar -xzf deploy.tar.gz
+            rm deploy.tar.gz
             docker compose down
             docker compose up --build -d
