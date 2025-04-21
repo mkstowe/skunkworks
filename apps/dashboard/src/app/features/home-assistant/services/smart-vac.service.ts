@@ -22,6 +22,7 @@ export class SmartVacService {
     return this.hassService.entities$.pipe(
       map((entities: any) => {
         const details: VacuumDetails = {
+          name: vacName,
           state: entities[`vacuum.${vacName}`]?.state,
           totalMissions: entities[`sensor.${vacName}_total_missions`]?.state,
           totalCleaningTime:
@@ -101,6 +102,7 @@ export class SmartVacService {
 }
 
 export interface VacuumDetails {
+  name?: string;
   state?: string;
   totalMissions?: number;
   totalCleaningTime?: number;

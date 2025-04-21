@@ -1,4 +1,5 @@
 import { Hono } from 'hono';
+import { deleteCookie, getCookie, setCookie } from 'hono/cookie';
 import { cors } from 'hono/cors';
 import { trimTrailingSlash } from 'hono/trailing-slash';
 import { createServer, IncomingMessage, ServerResponse } from 'http';
@@ -10,19 +11,61 @@ const app = new Hono();
 
 app.use(trimTrailingSlash());
 app.use(
-  '/',
+  '*',
   cors({
     origin: ['http://localhost:4200'],
     allowHeaders: ['Content-Type', 'Authorization'],
     allowMethods: ['GET', 'POST', 'OPTIONS'],
+    credentials: true,
     maxAge: 600,
   })
 );
+
+// Auth middleware
+app.use('/authorized', async (c, next) => {
+  const token = getCookie(c, 'authToken');
+  if (token !== process.env.SESSION_TOKEN) {
+    return c.text('Unauthorized', 401);
+  }
+  await next();
+});
+
+app.get('/authorized', (c) => {
+  return c.json({ success: true });
+});
 
 app.route('/hass', hass);
 
 app.get('', (c) => {
   return c.text('Hello!');
+});
+
+app.options('/login', (c) => c.body(null, 204));
+
+app.post('/login', async (c) => {
+  const body = await c.req.json();
+  const { password } = body;
+
+  if (password === process.env.VALID_PASSWORD) {
+    setCookie(c, 'authToken', process.env.SESSION_TOKEN, {
+      path: '/',
+      httpOnly: true,
+      secure: true,
+      sameSite: 'Strict',
+      maxAge: 34560000, // 400 days
+    });
+
+    return c.json({ success: true });
+  }
+
+  return c.json({ success: false }, 401);
+});
+
+app.options('/logout', (c) => c.body(null, 204));
+
+app.post('/logout', (c) => {
+  deleteCookie(c, 'authToken');
+  return c.json({ success: true });
 });
 
 async function toFetchRequest(req: IncomingMessage): Promise<Request> {

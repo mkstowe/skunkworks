@@ -1,0 +1,10 @@
+@if (loggedIn === false) {
+<input
+  #password
+  class="input mr-4"
+  type="password"
+  name="password"
+  placeholder="Password"
+/>
+<button class="btn btn-primary" (click)="onLogin()">Login</button>
+}

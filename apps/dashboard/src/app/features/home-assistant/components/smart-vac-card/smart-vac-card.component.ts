@@ -58,7 +58,7 @@ export class SmartVacCardComponent implements OnInit {
   }
 
   public openDetail() {
-    return;
+    this.openDetailSubject$.next();
   }
 
   // TODO: Start/Stop/Pause/Dock
