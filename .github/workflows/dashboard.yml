@@ -1,0 +1,53 @@
+name: Deploy Dashboard App
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'apps/dashboard/**'
+      - 'apps/dashboard-server/**'
+
+jobs:
+  deploy:
+    name: Deploy to Server
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build Angular app
+        run: npx nx build dashboard
+
+      - name: Build backend
+        run: npx nx build dashboard-server
+
+      - name: Deploy to self-hosted server via SSH
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          source: |
+            dist/apps/dashboard/
+            dist/apps/dashboard-server/
+          target: ${{ secrets.DEPLOY_PATH }}
+
+      - name: Restart server (optional)
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          script: |
+            cd ${{ secrets.DEPLOY_PATH }}
+            pm2 restart dashboard-server || pnpm run dist/index.js &
