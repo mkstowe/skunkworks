@@ -36,6 +36,9 @@ jobs:
 
       - name: Install dependencies (optional)
         run: pnpm install
+        
+      - name: List files before deploy
+        run: ls -R
 
       - name: Copy repo to server
         uses: appleboy/scp-action@v0.1.4
