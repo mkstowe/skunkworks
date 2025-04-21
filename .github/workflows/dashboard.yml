@@ -7,10 +7,13 @@ on:
     paths:
       - 'apps/dashboard/**'
       - 'apps/dashboard-server/**'
+      - 'apps/dashboard/Dockerfile'
+      - 'apps/dashboard-server/Dockerfile'
+      - 'docker-compose.yml'
 
 jobs:
   deploy:
-    name: Deploy to Server
+    name: Deploy to Docker Host
     runs-on: ubuntu-latest
 
     steps:
@@ -21,33 +24,28 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          
+
       - name: Set up pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10    
+          version: 10
 
-      - name: Install dependencies
+      - name: Install dependencies (optional)
         run: pnpm install
 
-      - name: Build Angular app
-        run: npx nx build dashboard
-
-      - name: Build backend
-        run: npx nx build dashboard-server
-
-      - name: Deploy to self-hosted server via SSH
+      - name: Copy repo to server
         uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_KEY }}
           source: |
-            dist/apps/dashboard/
-            dist/apps/dashboard-server/
+            apps/dashboard/
+            apps/dashboard-server/
+            docker-compose.yml
           target: ${{ secrets.DEPLOY_PATH }}
 
-      - name: Restart server (optional)
+      - name: Restart Docker containers
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.DEPLOY_HOST }}
@@ -55,4 +53,5 @@ jobs:
           key: ${{ secrets.DEPLOY_KEY }}
           script: |
             cd ${{ secrets.DEPLOY_PATH }}
-            pm2 restart dashboard-server || pnpm run dist/index.js &
+            docker compose down
+            docker compose up --build -d
