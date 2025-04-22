@@ -57,7 +57,6 @@ jobs:
             tsconfig.base.json \
             docker-compose.yml \
             eslint.config.mjs \ 
-            tailwind.config.js \
             postcss.config.js
 
       - name: Copy tarball to server
