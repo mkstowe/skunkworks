@@ -2,19 +2,19 @@ services:
   # === DASHBOARD FRONTEND ===
   dashboard-frontend:
     build:
-      context: ./dashboard
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: apps/dashboard/Dockerfile
     container_name: dashboard-frontend
     ports:
-      - "8080:80"
+      - '8080:80'
     restart: unless-stopped
 
   # === DASHBOARD BACKEND ===
   dashboard-backend:
     build:
-      context: ./dashboard-server
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: apps/dashboard-server/Dockerfile
     container_name: dashboard-backend
     ports:
-      - "3000:3000"
+      - '3000:3000'
     restart: unless-stopped

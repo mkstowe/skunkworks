@@ -48,10 +48,7 @@ jobs:
 
       - name: Create deployment tarball
         run: |
-          tar -czf deploy.tar.gz \
-            apps/dashboard \
-            apps/dashboard-server \
-            docker-compose.yml
+          tar -czf deploy.tar.gz .dockerignore apps libs nx.json package.json pnpm-lock.yaml pnpm-workspace.yaml tsconfig.base.json docker-compose.yml
 
       - name: Copy tarball to server
         uses: appleboy/scp-action@v0.1.4
