@@ -57,7 +57,8 @@ jobs:
             tsconfig.base.json \
             docker-compose.yml \
             eslint.config.mjs \
-            postcss.config.js
+            postcss.config.js \
+            .postcssrc.json
 
       - name: Copy tarball to server
         uses: appleboy/scp-action@v0.1.4
