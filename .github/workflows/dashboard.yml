@@ -51,11 +51,9 @@ jobs:
           cd $GITHUB_WORKSPACE
           tar -czf deploy.tar.gz \
             apps \
-            libs \
             nx.json \
             package.json \
             pnpm-lock.yaml \
-            pnpm-workspace.yaml \
             tsconfig.base.json \
             docker-compose.yml
 
