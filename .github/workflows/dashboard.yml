@@ -56,7 +56,9 @@ jobs:
             pnpm-lock.yaml \
             tsconfig.base.json \
             docker-compose.yml \
-            eslint.config.mjs
+            eslint.config.mjs \ 
+            tailwind.config.js \
+            postcss.config.js
 
       - name: Copy tarball to server
         uses: appleboy/scp-action@v0.1.4
