@@ -3,7 +3,6 @@ import {
   Connection,
   HassEntities,
   MessageBase,
-  createConnection,
   createLongLivedTokenAuth,
   subscribeEntities,
 } from 'home-assistant-js-websocket';
@@ -35,6 +34,7 @@ class HomeAssistantService {
   private async connect() {
     if (this._connection || !this._auth) return;
 
+    const { createConnection } = await import('home-assistant-js-websocket')
     this._connection = await createConnection({ auth: this._auth });
 
     subscribeEntities(this._connection, (entities) => {
