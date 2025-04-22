@@ -37,15 +37,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Debug file presence
-        run: |
-          echo "==> apps/dashboard/"
-          ls -lh apps/dashboard
-          echo "==> apps/dashboard-server/"
-          ls -lh apps/dashboard-server
-          echo "==> docker-compose.yml"
-          ls -l docker-compose.yml
-
       - name: Create deployment tarball
         run: |
           cd $GITHUB_WORKSPACE

@@ -11,6 +11,7 @@ services:
     build:
       context: .
       dockerfile: apps/dashboard-server/Dockerfile
+    container_name: backend  
     env_file:
       - .env
     environment:

@@ -14,7 +14,7 @@
         "outputPath": "dist/apps/dashboard-server",
         "format": ["cjs"],
         "bundle": false,
-        "main": "apps/dashboard-server/src/bootstrap.ts",
+        "main": "apps/dashboard-server/src/main.ts",
         "tsConfig": "apps/dashboard-server/tsconfig.app.json",
         "assets": ["apps/dashboard-server/src/assets"],
         "generatePackageJson": true,
