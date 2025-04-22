@@ -13,6 +13,8 @@ services:
       context: .
       dockerfile: apps/dashboard-server/Dockerfile
     container_name: dashboard-server
+    env_file:
+      - .env
     environment:
       - PORT=3000
     ports:

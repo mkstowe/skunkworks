@@ -74,6 +74,24 @@ jobs:
           rm: true
           debug: true
 
+      - name: Recreate .env file on server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          port: 2222
+          script: |
+            cd ${{ secrets.DEPLOY_PATH }}
+            cat <<EOF > .env
+            HASS_URL=${{ vars.HASS_URL }}
+            HASS_ACCESS_TOKEN=${{ secrets.HASS_ACCESS_TOKEN }}
+            MEALIE_ACCESS_TOKEN=${{ secrets.MEALIE_ACCESS_TOKEN }}
+            SPOTIFY_CLIENT_SECRET=${{ secrets.SPOTIFY_CLIENT_SECRET }}
+            VALID_PASSWORD=${{ secrets.VALID_PASSWORD }}
+            SESSION_TOKEN=${{ secrets.SESSION_TOKEN }}
+            EOF
+
       - name: Extract and restart Docker containers
         uses: appleboy/ssh-action@v1.0.3
         with:
