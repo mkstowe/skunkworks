@@ -4,8 +4,11 @@ import { cors } from 'hono/cors';
 import { trimTrailingSlash } from 'hono/trailing-slash';
 import { createServer, IncomingMessage, ServerResponse } from 'http';
 import { Readable } from 'stream';
-import { WebSocketServer } from 'ws';
+import WebSocket, { WebSocketServer } from 'ws';
 import { hass, injectWebSocketServer } from './routes/hass';
+
+// @ts-expect-error: ws doesn't match the expected browser WebSocket type
+globalThis.WebSocket = WebSocket;
 
 const app = new Hono();
 
