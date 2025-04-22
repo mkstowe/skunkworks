@@ -3,6 +3,8 @@ services:
     build:
       context: .
       dockerfile: apps/dashboard/Dockerfile
+    container_name: frontend  
+    image: frontend
     ports:
       - '8080:80'
     restart: unless-stopped
@@ -11,7 +13,8 @@ services:
     build:
       context: .
       dockerfile: apps/dashboard-server/Dockerfile
-    container_name: backend  
+    container_name: backend
+    image: backend  
     env_file:
       - .env
     environment:
