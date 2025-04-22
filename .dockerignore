@@ -1,4 +1,10 @@
 node_modules
 dist
+.angular
 .git
-tmp
+.gitignore
+Dockerfile
+.dockerignore
+*.log
+Dockerfile
+docker-compose.yml

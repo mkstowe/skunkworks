@@ -1,6 +1,5 @@
 services:
-  # === DASHBOARD FRONTEND ===
-  dashboard-frontend:
+  dashboard:
     build:
       context: .
       dockerfile: apps/dashboard/Dockerfile
@@ -9,12 +8,13 @@ services:
       - '8080:80'
     restart: unless-stopped
 
-  # === DASHBOARD BACKEND ===
-  dashboard-backend:
+  dashboard-server:
     build:
       context: .
       dockerfile: apps/dashboard-server/Dockerfile
-    container_name: dashboard-backend
+    container_name: dashboard-server
+    environment:
+      - PORT=3000
     ports:
-      - '3000:3000'
+      - '8081:3000'
     restart: unless-stopped

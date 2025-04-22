@@ -1,22 +1,13 @@
-# === Build Stage ===
-FROM node:20 AS builder
-
+FROM node:18-alpine AS builder
 WORKDIR /app
-
 COPY . .
+RUN npm install -g pnpm && pnpm install
 
-RUN corepack enable && corepack prepare pnpm@latest --activate
-RUN pnpm install
-RUN pnpm nx build dashboard
+# Build the Angular app
+RUN npx nx build dashboard
+RUN ls -la /app/dist/apps/dashboard
 
-# === Nginx Stage ===
+# Serve with nginx
 FROM nginx:alpine
-
-# Clear default html
-RUN rm -rf /usr/share/nginx/html/*
-
-# Copy Angular output
-COPY --from=builder /app/dist/apps/dashboard /usr/share/nginx/html
-
-# Optional: fix permissions
-RUN chmod -R 755 /usr/share/nginx/html
+COPY --from=builder /app/dist/apps/dashboard/browser /usr/share/nginx/html
+EXPOSE 80

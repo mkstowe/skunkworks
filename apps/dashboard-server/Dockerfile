@@ -1,11 +1,12 @@
-FROM node:20
-
+FROM node:18-alpine
 WORKDIR /app
 
 COPY . .
+RUN npm install -g pnpm && pnpm install
 
-RUN corepack enable && corepack prepare pnpm@latest --activate
-RUN pnpm install
-RUN pnpm nx build dashboard-server
+# Build the backend app
+RUN npx nx build dashboard-server
 
+# Run the backend
 CMD ["node", "dist/apps/dashboard-server/main.js"]
+EXPOSE 3000
