@@ -2,7 +2,7 @@ services:
   # === DASHBOARD FRONTEND ===
   dashboard-frontend:
     build:
-      context: ./apps/dashboard
+      context: ./dashboard
       dockerfile: Dockerfile
     container_name: dashboard-frontend
     ports:
@@ -12,7 +12,7 @@ services:
   # === DASHBOARD BACKEND ===
   dashboard-backend:
     build:
-      context: ./apps/dashboard-server
+      context: ./dashboard-server
       dockerfile: Dockerfile
     container_name: dashboard-backend
     ports:
