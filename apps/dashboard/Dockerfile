@@ -16,7 +16,7 @@ FROM nginx:alpine
 RUN rm -rf /usr/share/nginx/html/*
 
 # Copy Angular output
-COPY --from=builder /app/dist/apps/dashboard /usr/share/nginx/html
+COPY --from=builder /app/dist/apps/dashboard/browser /usr/share/nginx/html
 
 # Optional: fix permissions
 RUN chmod -R 755 /usr/share/nginx/html
