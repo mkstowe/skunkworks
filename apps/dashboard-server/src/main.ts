@@ -9,6 +9,7 @@ import { hass, injectWebSocketServer } from './routes/hass';
 
 // @ts-expect-error: ws doesn't match the expected browser WebSocket type
 globalThis.WebSocket = WebSocket;
+Object.assign(global, { WebSocket: require('ws') });
 
 const app = new Hono();
 
