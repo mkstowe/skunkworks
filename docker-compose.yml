@@ -1,11 +1,9 @@
-version: "3.8"
-
 services:
   # === DASHBOARD FRONTEND ===
   dashboard-frontend:
     build:
-      context: .
-      dockerfile: apps/dashboard/Dockerfile
+      context: ./apps/dashboard
+      dockerfile: Dockerfile
     container_name: dashboard-frontend
     ports:
       - "8080:80"
@@ -14,8 +12,8 @@ services:
   # === DASHBOARD BACKEND ===
   dashboard-backend:
     build:
-      context: .
-      dockerfile: apps/dashboard-server/Dockerfile
+      context: ./apps/dashboard-server
+      dockerfile: Dockerfile
     container_name: dashboard-backend
     ports:
       - "3000:3000"
