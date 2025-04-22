@@ -49,8 +49,8 @@ jobs:
       - name: Create deployment tarball
         run: |
           tar -czf deploy.tar.gz \
-            apps/dashboard/Dockerfile \
-            apps/dashboard-server/Dockerfile \
+            apps/dashboard \
+            apps/dashboard-server \
             docker-compose.yml
 
       - name: Copy tarball to server
