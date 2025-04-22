@@ -9,13 +9,14 @@ RUN corepack enable && corepack prepare pnpm@latest --activate
 RUN pnpm install
 RUN pnpm nx build dashboard
 
-# === Production Stage ===
+# === Nginx Stage ===
 FROM nginx:alpine
 
-# Remove default nginx static site
+# Clear default html
 RUN rm -rf /usr/share/nginx/html/*
 
-# Copy Angular output from build container
+# Copy Angular output
 COPY --from=builder /app/dist/apps/dashboard /usr/share/nginx/html
 
-# Optional: add your own nginx config here if needed
+# Optional: fix permissions
+RUN chmod -R 755 /usr/share/nginx/html
