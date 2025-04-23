@@ -81,6 +81,7 @@ jobs:
             SPOTIFY_CLIENT_SECRET=${{ secrets.SPOTIFY_CLIENT_SECRET }}
             VALID_PASSWORD=${{ secrets.VALID_PASSWORD }}
             SESSION_TOKEN=${{ secrets.SESSION_TOKEN }}
+            NODE_ENV=${{ vars.NODE_ENV }}
             EOF
 
       - name: Extract and restart Docker containers

@@ -54,7 +54,7 @@ app.post('/login', async (c) => {
     setCookie(c, 'authToken', process.env.SESSION_TOKEN, {
       path: '/',
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === 'production',
       sameSite: 'Strict',
       maxAge: 34560000, // 400 days
     });

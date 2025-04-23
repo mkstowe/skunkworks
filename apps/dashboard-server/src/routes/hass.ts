@@ -9,7 +9,7 @@ const hass = new Hono();
 hass.use(
   '*',
   cors({
-    origin: ['http://localhost:4200'],
+    origin: ['http://localhost:4200', 'http://192.168.50.94:8080'],
   })
 );
 
