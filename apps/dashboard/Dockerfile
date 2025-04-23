@@ -4,7 +4,7 @@ COPY . .
 RUN npm install -g pnpm && pnpm install
 
 # Build the Angular app
-RUN npx nx build dashboard
+RUN npx nx run dashboard:build:development
 RUN ls -la /app/dist/apps/dashboard
 
 # Serve with nginx

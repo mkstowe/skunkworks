@@ -1,5 +1,5 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://dashboard-server-8tnd.onrender.com',
-  wsUrl: 'wss://dashboard-server-8tnd.onrender.com',
+  apiUrl: 'http://192.168.50.94:8081',
+  wsUrl: 'ws://192.168.50.94:8081',
 };
