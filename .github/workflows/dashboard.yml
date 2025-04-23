@@ -49,7 +49,8 @@ jobs:
             docker-compose.yml \
             eslint.config.mjs \
             postcss.config.js \
-            .postcssrc.json
+            .postcssrc.json \
+            apps/dashboard/nginx.conf
 
       - name: Copy tarball to server
         uses: appleboy/scp-action@v0.1.4
