@@ -53,7 +53,9 @@ export class OverviewComponent implements OnInit {
         temperatureEntityId: 'climate.thermostat',
         humidityEntityId: 'climate.thermostat',
         occupiedEntityId: '',
-        actions: [],
+        actions: [
+          this.roomService.createLightToggleAction('light.living_room'),
+        ],
       },
       {
         title: 'Bedroom',
@@ -63,7 +65,7 @@ export class OverviewComponent implements OnInit {
         temperatureEntityId: 'sensor.bedroom_temperature',
         humidityEntityId: '',
         occupiedEntityId: 'binary_sensor.bedroom_occupancy',
-        actions: [],
+        actions: [this.roomService.createLightToggleAction('light.bedroom')],
       },
       {
         title: 'Workshop',
