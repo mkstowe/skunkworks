@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { NgIcon } from '@ng-icons/core';
 import { HassEntity } from 'home-assistant-js-websocket';
 import { Subject } from 'rxjs';
@@ -14,6 +14,8 @@ import { HassService } from '../../services/hass.service';
   styleUrl: './switch-card.component.scss',
 })
 export class SwitchCardComponent implements OnInit {
+  private readonly hassService = inject(HassService);
+
   @Input() entityId!: string;
   @Input() name?: string;
   @Input() icon?: string;
@@ -21,8 +23,6 @@ export class SwitchCardComponent implements OnInit {
   public entity?: HassEntity;
   public active = false;
   public valueChangeSubject$ = new Subject<void>();
-
-  constructor(private hassService: HassService) {}
 
   ngOnInit(): void {
     this.hassService.entities$.subscribe((res: any) => {

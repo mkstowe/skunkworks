@@ -1,13 +1,13 @@
-import { Injectable } from '@angular/core';
-import { HassService } from './hass.service';
-import { ServiceCall } from '../models/ServiceCall';
+import { inject, Injectable } from '@angular/core';
 import { RGBA } from 'ngx-color';
+import { ServiceCall } from '../models/ServiceCall';
+import { HassService } from './hass.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LightService {
-  constructor(private hass: HassService) {}
+  private readonly hass = inject(HassService);
 
   public toggleState(entity: string) {
     const service: ServiceCall = {

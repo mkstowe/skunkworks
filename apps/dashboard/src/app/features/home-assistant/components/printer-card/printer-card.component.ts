@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { NgIcon } from '@ng-icons/core';
 import { Subject } from 'rxjs';
 import { AutoScrollDirective } from '../../../../common/directives/auto-scroll.directive';
@@ -22,13 +22,13 @@ import { PrinterDetailComponent } from '../printer-detail/printer-detail.compone
   styleUrl: './printer-card.component.scss',
 })
 export class PrinterCardComponent implements OnInit {
+  private readonly printerService = inject(PrinterService);
+
   @Input() entityId = 'sensor.bambu_print_status';
   public active = false;
   public details: PrinterDetails = {};
   public openDetailSubject$ = new Subject<void>();
   public elapsedTime = 0;
-
-  constructor(private printerService: PrinterService) {}
 
   ngOnInit(): void {
     this.printerService.getPrinterDetails().subscribe((res: PrinterDetails) => {

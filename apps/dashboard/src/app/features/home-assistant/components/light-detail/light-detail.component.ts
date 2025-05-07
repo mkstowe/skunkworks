@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import {
   Component,
   ElementRef,
+  inject,
   Input,
   OnChanges,
   OnInit,
@@ -21,6 +22,8 @@ import { LightService } from '../../services/light.service';
   styleUrl: './light-detail.component.scss',
 })
 export class LightDetailComponent implements OnInit, OnChanges {
+  private readonly lightService = inject(LightService);
+
   @Input() openModalSubject$!: Subject<void>;
   @Input() entity!: HassEntity;
   public valueChangeSubject$ = new Subject<void>();
@@ -28,8 +31,6 @@ export class LightDetailComponent implements OnInit, OnChanges {
   public color!: RGBA;
 
   @ViewChild('modal') modal!: ElementRef<HTMLDialogElement>;
-
-  constructor(private lightService: LightService) {}
 
   ngOnInit(): void {
     this.openModalSubject$.subscribe(() => {

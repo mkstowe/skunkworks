@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { NgIcon } from '@ng-icons/core';
 import { HassEntity } from '../../models/Entity';
 import { RoomAction } from '../../models/RoomAction';
@@ -12,6 +12,8 @@ import { HassService } from '../../services/hass.service';
   styleUrl: './room-card.component.scss',
 })
 export class RoomCardComponent implements OnInit {
+  private readonly hassService = inject(HassService);
+
   @Input() title!: string;
   @Input() roomName!: string;
   @Input() icon?: string;
@@ -25,8 +27,6 @@ export class RoomCardComponent implements OnInit {
   public temperature?: string;
   public humidity?: string;
   public occupied?: boolean;
-
-  constructor(private hassService: HassService) {}
 
   ngOnInit(): void {
     this.hassService.entities$.subscribe((entities: any) => {

@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Entity } from '../../models/Entity';
-import { HassService } from '../../services/hass.service';
 
 @Component({
   selector: 'app-home',
@@ -12,8 +11,6 @@ import { HassService } from '../../services/hass.service';
 })
 export class HomeComponent implements OnInit {
   public entities: Entity[] = [];
-
-  constructor(private hassService: HassService) {}
 
   ngOnInit(): void {
     return;

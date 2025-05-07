@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { NgIcon } from '@ng-icons/core';
 import { Subject } from 'rxjs';
 import {
@@ -15,12 +15,12 @@ import { SmartVacDetailComponent } from '../smart-vac-detail/smart-vac-detail.co
   styleUrl: './smart-vac-card.component.scss',
 })
 export class SmartVacCardComponent implements OnInit {
+  private readonly vacService = inject(SmartVacService);
+
   @Input() vacuumName!: string;
   public active = false;
   public details: VacuumDetails = {};
   public openDetailSubject$ = new Subject<void>();
-
-  constructor(private vacService: SmartVacService) {}
 
   ngOnInit(): void {
     this.vacService.getVacuumDetails(this.vacuumName).subscribe((details) => {

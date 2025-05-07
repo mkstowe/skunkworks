@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { NgIcon } from '@ng-icons/core';
 import { Subject, take } from 'rxjs';
 import { HassEntity } from '../../models/Entity';
@@ -14,6 +14,9 @@ import { ThermostatDetailComponent } from '../thermostat-detail/thermostat-detai
   styleUrl: './thermostat-card.component.scss',
 })
 export class ThermostatCardComponent implements OnInit {
+  private readonly hassService = inject(HassService);
+  private readonly thermostatService = inject(ThermostatService);
+
   @Input() entityId!: string;
   @Input() name?: string;
   public icon = 'thermometer';
@@ -22,11 +25,6 @@ export class ThermostatCardComponent implements OnInit {
   public temp?: number;
   public mode = '';
   public openDetailSubject$ = new Subject<void>();
-
-  constructor(
-    private hassService: HassService,
-    private thermostatService: ThermostatService
-  ) {}
 
   ngOnInit(): void {
     this.hassService.entities$.subscribe((res: any) => {

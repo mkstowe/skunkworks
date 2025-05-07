@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, OnDestroy } from '@angular/core';
+import { inject, Injectable, OnDestroy } from '@angular/core';
 import {
   BehaviorSubject,
   distinctUntilChanged,
@@ -18,6 +18,8 @@ import { ServiceCall } from '../models/ServiceCall';
   providedIn: 'root',
 })
 export class HassService implements OnDestroy {
+  private readonly http = inject(HttpClient);
+
   private readonly wsUrl = `${environment.wsUrl}/hass/ws`;
   private readonly apiUrl = `${environment.apiUrl}/hass`;
   private socket!: WebSocket;
@@ -28,7 +30,7 @@ export class HassService implements OnDestroy {
   private _refresh$ = new BehaviorSubject<null>(null);
   private onStates = ['on', 'playing', 'paused', 'idle', 'Detected'];
 
-  constructor(private http: HttpClient) {
+  constructor() {
     this.connectWebsocket();
   }
 

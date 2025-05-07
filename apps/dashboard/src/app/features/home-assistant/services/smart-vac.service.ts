@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { map, take } from 'rxjs';
 import { ServiceCall } from '../models/ServiceCall';
 import { HassService } from './hass.service';
@@ -7,7 +7,7 @@ import { HassService } from './hass.service';
   providedIn: 'root',
 })
 export class SmartVacService {
-  constructor(private hassService: HassService) {}
+  private readonly hass = inject(HassService);
 
   public get activeStates() {
     return ['cleaning', 'docked', 'returning'];
@@ -19,7 +19,7 @@ export class SmartVacService {
   }
 
   public getVacuumDetails(vacName: string) {
-    return this.hassService.entities$.pipe(
+    return this.hass.entities$.pipe(
       map((entities: any) => {
         const details: VacuumDetails = {
           name: vacName,
@@ -53,7 +53,7 @@ export class SmartVacService {
         entity_id: `vacuum.${vacName}`,
       },
     };
-    this.hassService.callService(service).pipe(take(1)).subscribe();
+    this.hass.callService(service).pipe(take(1)).subscribe();
   }
 
   public pauseCleaning(vacName: string) {
@@ -64,7 +64,7 @@ export class SmartVacService {
         entity_id: `vacuum.${vacName}`,
       },
     };
-    this.hassService.callService(service).pipe(take(1)).subscribe();
+    this.hass.callService(service).pipe(take(1)).subscribe();
   }
 
   public stopCleaning(vacName: string) {
@@ -75,7 +75,7 @@ export class SmartVacService {
         entity_id: `vacuum.${vacName}`,
       },
     };
-    this.hassService.callService(service).pipe(take(1)).subscribe();
+    this.hass.callService(service).pipe(take(1)).subscribe();
   }
 
   public dock(vacName: string) {
@@ -86,7 +86,7 @@ export class SmartVacService {
         entity_id: `vacuum.${vacName}`,
       },
     };
-    this.hassService.callService(service).pipe(take(1)).subscribe();
+    this.hass.callService(service).pipe(take(1)).subscribe();
   }
 
   public locate(vacName: string) {
@@ -97,7 +97,7 @@ export class SmartVacService {
         entity_id: `vacuum.${vacName}`,
       },
     };
-    this.hassService.callService(service).pipe(take(1)).subscribe();
+    this.hass.callService(service).pipe(take(1)).subscribe();
   }
 }
 

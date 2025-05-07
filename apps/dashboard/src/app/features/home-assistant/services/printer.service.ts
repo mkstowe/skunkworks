@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { map, take } from 'rxjs';
 import { HassEntity } from '../models/Entity';
 import { ServiceCall } from '../models/ServiceCall';
@@ -8,7 +8,7 @@ import { HassService } from './hass.service';
   providedIn: 'root',
 })
 export class PrinterService {
-  constructor(private hassService: HassService) {}
+  private readonly hass = inject(HassService);
 
   public get activeStates() {
     return ['Paused', 'Preparing', 'Running', 'Slicing'];
@@ -67,7 +67,7 @@ export class PrinterService {
   }
 
   public getPrinterDetails() {
-    return this.hassService.entities$.pipe(
+    return this.hass.entities$.pipe(
       map((entities: any) => {
         const details: PrinterDetails = {
           printStatus: this.getState(
@@ -102,7 +102,7 @@ export class PrinterService {
         entity_id: 'button.bambu_resume_printing',
       },
     };
-    this.hassService.callService(service).pipe(take(1)).subscribe();
+    this.hass.callService(service).pipe(take(1)).subscribe();
   }
 
   public pausePrint() {
@@ -113,7 +113,7 @@ export class PrinterService {
         entity_id: 'button.bambu_pause_printing',
       },
     };
-    this.hassService.callService(service).pipe(take(1)).subscribe();
+    this.hass.callService(service).pipe(take(1)).subscribe();
   }
 
   public stopPrint() {
@@ -124,7 +124,7 @@ export class PrinterService {
         entity_id: 'button.bambu_stop_printing',
       },
     };
-    this.hassService.callService(service).pipe(take(1)).subscribe();
+    this.hass.callService(service).pipe(take(1)).subscribe();
   }
 }
 

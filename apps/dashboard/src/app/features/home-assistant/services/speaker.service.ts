@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { EMPTY, map, switchMap, take } from 'rxjs';
 import { ServiceCall } from '../models/ServiceCall';
 import { HassService } from './hass.service';
@@ -7,7 +7,7 @@ import { HassService } from './hass.service';
   providedIn: 'root',
 })
 export class SpeakerService {
-  constructor(private hass: HassService) {}
+  private readonly hass = inject(HassService);
 
   public toggleState(entity: string) {
     const service: ServiceCall = {

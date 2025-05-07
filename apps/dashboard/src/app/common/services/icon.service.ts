@@ -1,11 +1,13 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { EMPTY, Observable, catchError, forkJoin, map, take } from 'rxjs';
+import { inject, Injectable } from '@angular/core';
+import { catchError, EMPTY, forkJoin, map, Observable, take } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class IconService {
+  private readonly http = inject(HttpClient);
+
   private basePath = 'assets/icons';
   private paths: string[] = [
     'bed.svg',
@@ -56,8 +58,6 @@ export class IconService {
     'youtube.svg',
     'zzz.svg',
   ];
-
-  constructor(private http: HttpClient) {}
 
   public get iconNames() {
     return this.paths.map((path) => path.replace('.svg', ''));

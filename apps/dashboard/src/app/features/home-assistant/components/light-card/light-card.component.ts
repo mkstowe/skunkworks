@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { NgIcon } from '@ng-icons/core';
 import { delay, Subject, take } from 'rxjs';
 import { ProgressBarComponent } from '../../../../common/components/progress-bar/progress-bar.component';
@@ -15,6 +15,9 @@ import { LightDetailComponent } from '../light-detail/light-detail.component';
   styleUrl: './light-card.component.scss',
 })
 export class LightCardComponent implements OnInit {
+  private readonly hassService = inject(HassService);
+  private readonly lightService = inject(LightService);
+
   @Input() entityId!: string;
   @Input() name?: string;
   @Input() icon?: string;
@@ -24,11 +27,6 @@ export class LightCardComponent implements OnInit {
   public openDetailSubject$ = new Subject<void>();
   public brightnessProgress = 0;
   public numDots = 20;
-
-  constructor(
-    private hassService: HassService,
-    private lightService: LightService
-  ) {}
 
   public ngOnInit(): void {
     this.hassService.entities$.subscribe((res: any) => {

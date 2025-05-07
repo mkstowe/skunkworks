@@ -1,32 +1,19 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { DatetimeComponent } from '../../../../../common/components/datetime/datetime.component';
-import { LightCardComponent } from '../../../components/light-card/light-card.component';
+import { Component, inject, OnInit } from '@angular/core';
 import { RoomCardComponent } from '../../../components/room-card/room-card.component';
-import { ThermostatCardComponent } from '../../../components/thermostat-card/thermostat-card.component';
 import { RoomConfig } from '../../../models/RoomConfig';
-import { HassService } from '../../../services/hass.service';
 import { RoomService } from '../../../services/room.service';
 
 @Component({
   selector: 'app-living-room',
-  imports: [
-    CommonModule,
-    ThermostatCardComponent,
-    LightCardComponent,
-    RoomCardComponent,
-    DatetimeComponent,
-  ],
+  imports: [CommonModule, RoomCardComponent],
   templateUrl: './overview.component.html',
   styleUrl: './overview.component.scss',
 })
 export class OverviewComponent implements OnInit {
-  public roomConfigs: RoomConfig[] = [];
+  private roomService = inject(RoomService);
 
-  constructor(
-    private hassService: HassService,
-    private roomService: RoomService
-  ) {}
+  public roomConfigs: RoomConfig[] = [];
 
   ngOnInit(): void {
     this.roomConfigs = [

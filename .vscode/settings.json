@@ -1,6 +1,7 @@
 {
   "tailwindCSS.experimental.configFile": "apps/dashboard/tailwind.config.js",
   "cSpell.words": [
-    "hass"
+    "hass",
+    "hvac"
   ]
 }

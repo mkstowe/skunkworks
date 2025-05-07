@@ -9,10 +9,8 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Subject } from 'rxjs';
-import { HassEntity } from '../../models/Entity';
-import { HassService } from '../../services/hass.service';
-import { ThermostatService } from '../../services/thermostat.service';
 import { CircularSliderComponent } from '../../../../common/components/circular-slider/circular-slider.component';
+import { HassEntity } from '../../models/Entity';
 
 @Component({
   selector: 'app-thermostat-detail',
@@ -31,11 +29,6 @@ export class ThermostatDetailComponent implements OnInit, OnChanges {
   public circleRotateAngle = 180 + (this.circleOpeningPercent * 3.6) / 2; // This makes the opening straight down
 
   @ViewChild('modal') modal!: ElementRef<HTMLDialogElement>;
-
-  constructor(
-    private hassService: HassService,
-    private thermostatService: ThermostatService
-  ) {}
 
   ngOnInit(): void {
     this.openModalSubject$.subscribe(() => {

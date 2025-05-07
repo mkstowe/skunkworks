@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  inject,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
@@ -10,11 +16,12 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './login.component.scss',
 })
 export class LoginComponent implements OnInit {
+  private readonly auth = inject(AuthService);
+  private readonly router = inject(Router);
+
   @ViewChild('password') passwordInput!: ElementRef<HTMLInputElement>;
   public loggedIn?: boolean;
   private password = '';
-
-  constructor(private auth: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     this.auth.loggedIn$.subscribe((loggedIn) => {

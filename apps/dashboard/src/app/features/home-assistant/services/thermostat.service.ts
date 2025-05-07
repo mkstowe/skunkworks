@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { ServiceCall } from '../models/ServiceCall';
 import { HassService } from './hass.service';
 
@@ -6,7 +6,7 @@ import { HassService } from './hass.service';
   providedIn: 'root',
 })
 export class ThermostatService {
-  constructor(private hass: HassService) {}
+  private readonly hass = inject(HassService);
 
   public changeTemperature(entity: string, value: number) {
     const service: ServiceCall = {

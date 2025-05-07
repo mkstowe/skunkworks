@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectorRef,
   Component,
+  inject,
   Input,
   OnInit,
   ViewEncapsulation,
@@ -19,6 +20,8 @@ import { colors } from '../../models/Colors';
   encapsulation: ViewEncapsulation.None,
 })
 export class IconComponent implements OnInit {
+  private readonly cdr = inject(ChangeDetectorRef);
+
   @Input() name!: string;
   @Input() active = false;
   @Input() color?: colors = 'basic';
@@ -31,8 +34,6 @@ export class IconComponent implements OnInit {
   public colorClass = 'text-basic';
   public activeColorClass = 'fill-primary';
   public classes = '';
-
-  constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.valueChangeSubject$.subscribe(() => {

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { NgIcon } from '@ng-icons/core';
 import { HassEntity } from 'home-assistant-js-websocket';
 import { delay, Subject } from 'rxjs';
@@ -15,6 +15,9 @@ import { SpeakerDetailComponent } from '../speaker-detail/speaker-detail.compone
   styleUrl: './speaker-card.component.scss',
 })
 export class SpeakerCardComponent implements OnInit {
+  private readonly hassService = inject(HassService);
+  private readonly speakerService = inject(SpeakerService);
+
   @Input() entityId!: string;
   @Input() name?: string;
   @Input() icon?: string;
@@ -27,11 +30,6 @@ export class SpeakerCardComponent implements OnInit {
   public volumeProgress = 0;
 
   private onStates = ['on', 'idle', 'playing', 'paused'];
-
-  constructor(
-    private hassService: HassService,
-    private speakerService: SpeakerService
-  ) {}
 
   public ngOnInit(): void {
     this.hassService.entities$.subscribe((res: any) => {

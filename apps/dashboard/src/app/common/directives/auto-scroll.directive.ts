@@ -1,6 +1,7 @@
 import {
   Directive,
   ElementRef,
+  inject,
   Input,
   OnChanges,
   OnDestroy,
@@ -12,11 +13,11 @@ import {
   selector: '[appScrollingText]',
 })
 export class AutoScrollDirective implements OnInit, OnChanges, OnDestroy {
+  private readonly el = inject(ElementRef<HTMLElement>);
+
   @Input('appScrollingText') text = '';
   @Input() speed = 50; // milliseconds
   private intervalId: any;
-
-  constructor(private el: ElementRef) {}
 
   ngOnInit() {
     this.startScrolling();
