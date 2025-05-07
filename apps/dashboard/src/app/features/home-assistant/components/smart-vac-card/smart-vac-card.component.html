@@ -10,7 +10,10 @@
   <div class="flex w-full flex-col items-start gap-1 my-2 px-2">
     <div class="info w-full flex justify-between items-center">
       <div class="flex items-center gap-4 w-full justify-between">
-        <p class="text-lg font-bold">{{ details.state | titlecase }}</p>
+        <div class="flex flex-col">
+          <p class="text-lg font-bold">{{ details.name }}</p>
+          <p class="text-lg font-bold">{{ details.state | titlecase }}</p>
+        </div>
         <div class="detail-button">
           <button
             class="btn btn-circle btn-ghost text-3xl hover:btn-primary"

@@ -1,13 +1,7 @@
 <div class="w-full flex flex-col gap-8 pb-8">
-  <div class="w-[600px]">
-    <app-smart-vac-card
-      vacuumName="caruthers"
-      class="h-24 w-full"
-    ></app-smart-vac-card>
-    <!-- <app-printer-card class="h-24 w-full"></app-printer-card> -->
-    <!-- <app-thermostat-card class="w-full h-18" entityId="climate.thermostat"></app-thermostat-card> -->
+  <!-- <app-thermostat-card class="w-full h-18" entityId="climate.thermostat"></app-thermostat-card> -->
 
-    <app-light-card
+  <!-- <app-light-card
       class="w-full h-24"
       entityId="light.office"
       icon="lightbulb"
@@ -17,27 +11,11 @@
       class="w-full h-24"
       entityId="media_player.office_speaker"
       icon="speaker"
-    ></app-speaker-card>
-  </div>
-  <!-- <div class="flex">
-        <app-switch-card
-        class="shrink"
-        entityId="light.office"
-        icon="lightbulb"
-        ></app-switch-card>
-    </div> -->
+    ></app-speaker-card> -->
+
+  <div class="overview w-full"></div>
 
   <div class="rooms flex flex-wrap gap-8">
-    <!-- <app-room-card
-      class="w-96 h-64"
-      title="Office"
-      roomName="office"
-      color="primary"
-      icon="computer"
-      temperatureEntityId="climate.thermostat"
-      humidityEntityId="climate.thermostat"
-    ></app-room-card> -->
-
     @for (room of roomConfigs; track room.title) {
     <app-room-card
       class="w-80 h-64"

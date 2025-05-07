@@ -1,10 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { DatetimeComponent } from '../../../../../common/components/datetime/datetime.component';
 import { LightCardComponent } from '../../../components/light-card/light-card.component';
-import { PrinterCardComponent } from '../../../components/printer-card/printer-card.component';
 import { RoomCardComponent } from '../../../components/room-card/room-card.component';
-import { SmartVacCardComponent } from '../../../components/smart-vac-card/smart-vac-card.component';
-import { SpeakerCardComponent } from '../../../components/speaker-card/speaker-card.component';
 import { ThermostatCardComponent } from '../../../components/thermostat-card/thermostat-card.component';
 import { RoomConfig } from '../../../models/RoomConfig';
 import { HassService } from '../../../services/hass.service';
@@ -17,9 +15,7 @@ import { RoomService } from '../../../services/room.service';
     ThermostatCardComponent,
     LightCardComponent,
     RoomCardComponent,
-    SpeakerCardComponent,
-    PrinterCardComponent,
-    SmartVacCardComponent,
+    DatetimeComponent,
   ],
   templateUrl: './overview.component.html',
   styleUrl: './overview.component.scss',
