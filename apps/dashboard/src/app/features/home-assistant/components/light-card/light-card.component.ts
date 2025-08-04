@@ -1,70 +1,73 @@
-import { CommonModule } from '@angular/common';
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, computed, inject, Input } from '@angular/core';
 import { NgIcon } from '@ng-icons/core';
-import { delay, Subject, take } from 'rxjs';
+import { Subject } from 'rxjs';
 import { ProgressBarComponent } from '../../../../common/components/progress-bar/progress-bar.component';
-import { HassEntity } from '../../models/Entity';
 import { HassService } from '../../services/hass.service';
-import { LightService } from '../../services/light.service';
 import { LightDetailComponent } from '../light-detail/light-detail.component';
 
 @Component({
   selector: 'app-light-card',
-  imports: [CommonModule, ProgressBarComponent, LightDetailComponent, NgIcon],
+  imports: [NgIcon, ProgressBarComponent, LightDetailComponent],
   templateUrl: './light-card.component.html',
-  styleUrl: './light-card.component.scss',
+  styleUrls: ['./light-card.component.scss'],
 })
-export class LightCardComponent implements OnInit {
-  private readonly hassService = inject(HassService);
-  private readonly lightService = inject(LightService);
+export class LightCardComponent {
+  private readonly hass = inject(HassService);
 
   @Input() entityId!: string;
-  @Input() name?: string;
   @Input() icon?: string;
-  public entity?: HassEntity;
-  public brightness: number | null = null;
-  public active = false;
+  @Input() name?: string;
+  @Input() numDots = 10;
+
   public openDetailSubject$ = new Subject<void>();
-  public brightnessProgress = 0;
-  public numDots = 20;
 
-  public ngOnInit(): void {
-    this.hassService.entities$.subscribe((res: any) => {
-      this.entity = res[this.entityId];
-      this.brightness = (this.entity?.attributes['brightness'] as number) ?? 0;
-      this.brightnessProgress = Math.round(
-        (this.brightness / 255) * this.numDots
-      );
-      this.active = this.hassService.isActive(this.entity);
-    });
-  }
+  public entity = this.hass.entitySignal(this.entityId);
 
-  public toggleState() {
-    this.lightService
-      .toggleState(this.entityId)
-      .pipe(delay(1550), take(1))
+  public active = computed(() => this.entity()?.state === 'on');
+  public brightness = computed(
+    () => (this.entity()?.attributes['brightness'] as number) ?? 0
+  );
+  public brightnessProgress = computed(() =>
+    Math.round((this.brightness() / 255) * this.numDots)
+  );
+
+  // ngOnInit() {
+  //   this.hass.getEntity$(this.entityId).subscribe((ent) => {
+  //     this.entity.set(ent);
+  //   });
+  // }
+
+  toggleState() {
+    const current = this.entity();
+    if (!current) return;
+
+    this.hass
+      .callService({
+        domain: 'light',
+        service: current.state === 'on' ? 'turn_off' : 'turn_on',
+        target: { entity_id: this.entityId },
+      })
       .subscribe();
   }
 
-  public onBrightnessChange(value: number) {
-    const newBrightness = value * 255;
-    this.lightService
-      .changeBrightness(this.entityId, newBrightness)
-      .pipe(delay(1550), take(1))
+  onBrightnessChange(value: number) {
+    this.hass
+      .callService({
+        domain: 'light',
+        service: 'turn_on',
+        service_data: {
+          brightness: Math.round((value / this.numDots) * 255),
+        },
+        target: { entity_id: this.entityId },
+      })
       .subscribe();
   }
 
-  public openDetail() {
+  openDetail() {
     this.openDetailSubject$.next();
   }
 
-  public valueAsPercentage(value: number) {
-    // Min: 0
-    // Max: 255
+  valueAsPercentage(value: number) {
     return Math.round((value / 255) * 100);
-  }
-
-  public round(value: number) {
-    return Math.round(value);
   }
 }

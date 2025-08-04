@@ -5,7 +5,6 @@ import {
   Input,
   OnChanges,
   Output,
-  SimpleChanges,
 } from '@angular/core';
 
 @Component({
@@ -26,7 +25,7 @@ export class ProgressBarComponent implements OnChanges {
 
   dots: number[] = [];
 
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(): void {
     this.dots = Array.from({ length: this.total }, (_, i) => i);
   }
 

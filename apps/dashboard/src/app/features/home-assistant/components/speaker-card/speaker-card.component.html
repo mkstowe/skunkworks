@@ -1,15 +1,15 @@
-@if (entity) {
+@if (entity()) {
 <div class="bg-background flex gap-8 items-center h-full">
   @if(icon) {
   <button
-    [class.active]="active"
-    [class]="active ? 'bg-light' : 'bg-dark'"
+    [class.active]="active()"
+    [class]="active() ? 'bg-light' : 'bg-dark'"
     class="btn bg-dark w-18 h-18 rounded-2xl border-2 border-light"
     (click)="togglePlayback()"
   >
     <div
       class="flex justify-center items-center text-4xl w-full h-full"
-      [class]="active ? 'text-dark' : 'text-light'"
+      [class]="active() ? 'text-dark' : 'text-light'"
     >
       <ng-icon [name]="icon"></ng-icon>
     </div>
@@ -21,11 +21,13 @@
       class="info text-lg font-bold w-full flex justify-between items-center px-2"
     >
       <div class="name">
-        {{ name || entity.attributes['friendly_name'] || '' }}
+        {{ name || entity()!.attributes['friendly_name'] || '' }}
       </div>
       <div class="flex align-items-center gap-4">
         <div class="volume m-auto">
-          {{ volume && volume > 0 ? valueAsPercentage(volume) + '%' : 'Off' }}
+          {{
+            volume() && volume() > 0 ? valueAsPercentage(volume()) + '%' : 'Off'
+          }}
         </div>
 
         <div class="detail-btn">
@@ -40,7 +42,7 @@
     </div>
     <div class="flex w-full justify-between items-center pr-2">
       <app-progress-bar
-        [value]="volumeProgress"
+        [value]="volumeProgress()"
         [total]="numDots"
         [interactive]="true"
         activeColor="bg-primary"
@@ -62,7 +64,7 @@
           class="btn btn-circle btn-ghost text-2xl hover:btn-primary"
           (click)="togglePlayback()"
         >
-          <ng-icon [name]="playing ? 'pause' : 'play'"></ng-icon>
+          <ng-icon [name]="playing() ? 'pause' : 'play'"></ng-icon>
         </button>
 
         <button
@@ -78,6 +80,6 @@
 
 <app-speaker-detail
   [openModalSubject$]="openDetailSubject$"
-  [entity]="entity"
+  [entity]="entity()!"
 ></app-speaker-detail>
 }

@@ -1,5 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  Input,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { NgIcon } from '@ng-icons/core';
 import { Subject } from 'rxjs';
 import {
@@ -18,14 +25,15 @@ export class SmartVacCardComponent implements OnInit {
   private readonly vacService = inject(SmartVacService);
 
   @Input() vacuumName!: string;
-  public active = false;
-  public details: VacuumDetails = {};
+  public details = signal<VacuumDetails | null>(null);
+  public active = computed(() =>
+    this.vacService.isActive(this.details()?.state)
+  );
   public openDetailSubject$ = new Subject<void>();
 
   ngOnInit(): void {
     this.vacService.getVacuumDetails(this.vacuumName).subscribe((details) => {
-      this.details = details;
-      this.active = this.vacService.isActive(this.details.state);
+      this.details.set(details);
     });
   }
 
@@ -38,7 +46,7 @@ export class SmartVacCardComponent implements OnInit {
   }
 
   public toggleState() {
-    if (this.details.state === 'cleaning') {
+    if (this.details()?.state === 'cleaning') {
       this.pauseCleaning();
     } else {
       this.startCleaning();

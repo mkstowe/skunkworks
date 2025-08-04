@@ -1,4 +1,4 @@
-@if (entity) {
+@if (entity()) {
 <div class="card border-light border-2 card-md shadow-sm">
   <div class="card-body gap-4">
     <div class="card-title flex gap-4 pr-4">
@@ -8,11 +8,15 @@
       >
         <ng-icon class="" [name]="icon"></ng-icon>
       </div>
-      } {{ name || entity.attributes['friendly_name'] || '' }}
+      } {{ name || entity()!.attributes['friendly_name'] || '' }}
     </div>
     <div class="flex gap-4 items-center justify-between pl-1">
-      <div class="text-lg font-bold">{{ entity.state | uppercase }}</div>
-      <input type="checkbox" [checked]="active" class="toggle toggle-accent" />
+      <div class="text-lg font-bold">{{ entity()?.state | uppercase }}</div>
+      <input
+        type="checkbox"
+        [checked]="active()"
+        class="toggle toggle-accent"
+      />
     </div>
   </div>
 </div>

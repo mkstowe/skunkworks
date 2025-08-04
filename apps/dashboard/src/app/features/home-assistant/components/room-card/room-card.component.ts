@@ -1,5 +1,12 @@
-import { CommonModule } from '@angular/common';
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { CommonModule, DecimalPipe } from '@angular/common';
+import {
+  Component,
+  computed,
+  inject,
+  Input,
+  OnInit,
+  Signal,
+} from '@angular/core';
 import { NgIcon } from '@ng-icons/core';
 import { HassEntity } from '../../models/Entity';
 import { RoomAction } from '../../models/RoomAction';
@@ -7,12 +14,12 @@ import { HassService } from '../../services/hass.service';
 
 @Component({
   selector: 'app-room-card',
-  imports: [CommonModule, NgIcon],
+  imports: [CommonModule, NgIcon, DecimalPipe],
   templateUrl: './room-card.component.html',
   styleUrl: './room-card.component.scss',
 })
 export class RoomCardComponent implements OnInit {
-  private readonly hassService = inject(HassService);
+  private readonly hass = inject(HassService);
 
   @Input() title!: string;
   @Input() roomName!: string;
@@ -23,64 +30,74 @@ export class RoomCardComponent implements OnInit {
   @Input() occupiedEntityId?: string;
   @Input() actions: RoomAction[] = [];
 
-  public actionStates: Record<string, HassEntity | null> = {};
-  public temperature?: string;
-  public humidity?: string;
-  public occupied?: boolean;
+  public temperatureEntity: Signal<HassEntity | null> | null = null;
+  public humidityEntity: Signal<HassEntity | null> | null = null;
+  public occupiedEntity: Signal<HassEntity | null> | null = null;
+
+  public temperature = computed(() => {
+    const e = this.temperatureEntity?.();
+    if (!e) return null;
+
+    if (e.entity_id.startsWith('climate')) {
+      return e.attributes?.['current_temperature'] as string;
+    }
+    return e.state;
+  });
+
+  public humidity = computed(() => {
+    const e = this.humidityEntity?.();
+    if (!e) return null;
+
+    if (e.entity_id.startsWith('climate')) {
+      return e.attributes?.['current_humidity'] as string;
+    }
+    return e.state;
+  });
+
+  public occupied = computed(() => {
+    const e = this.occupiedEntity?.();
+    return e ? this.hass.isActive(e) : false;
+  });
+
+  public actionStates: Record<string, Signal<HassEntity | null>> = {};
 
   ngOnInit(): void {
-    this.hassService.entities$.subscribe((entities: any) => {
-      if (this.temperatureEntityId) {
-        const temperatureEntity: HassEntity =
-          entities[this.temperatureEntityId];
-        if (temperatureEntity?.entity_id.split('.')[0] === 'climate') {
-          this.temperature = temperatureEntity.attributes?.[
-            'current_temperature'
-          ] as string;
-        } else {
-          this.temperature = temperatureEntity?.state;
-        }
-      }
-      if (this.humidityEntityId) {
-        const humidityEntity = entities[this.humidityEntityId];
-        if (humidityEntity?.entity_id.split('.')[0] === 'climate') {
-          this.humidity = humidityEntity.attributes?.['current_humidity'];
-        } else {
-          this.humidity = humidityEntity?.state;
-        }
-      }
-      if (this.occupiedEntityId) {
-        const occupiedEntity = entities[this.occupiedEntityId];
-        this.occupied = this.hassService.isActive(occupiedEntity);
-      }
-    });
+    if (this.temperatureEntityId) {
+      this.temperatureEntity = this.hass.entitySignal(this.temperatureEntityId);
+    }
+    if (this.humidityEntityId) {
+      this.humidityEntity = this.hass.entitySignal(this.humidityEntityId);
+    }
+    if (this.occupiedEntityId) {
+      this.occupiedEntity = this.hass.entitySignal(this.occupiedEntityId);
+    }
 
     this.actions.forEach((action) => {
       if (action.entityId) {
-        this.hassService.getEntity$(action.entityId).subscribe((entity) => {
-          this.actionStates[action.entityId] = entity;
-        });
+        this.actionStates[action.entityId] = this.hass.entitySignal(
+          action.entityId
+        );
       }
     });
   }
 
   public callAction(action: RoomAction): void {
-    const entity = this.actionStates[action.entityId];
+    const entity = this.actionStates[action.entityId]();
     if (!entity) return;
     const svc = action.getService ? action.getService(entity) : action.service;
     if (svc) {
-      this.hassService.callService(svc).subscribe();
+      this.hass.callService(svc).subscribe();
     }
   }
 
   public getIcon(action: RoomAction): string {
-    const entity = this.actionStates[action.entityId];
+    const entity = this.actionStates[action.entityId]();
     if (!entity) return action.icon ?? 'question';
     return action.getIcon ? action.getIcon(entity) : action.icon ?? 'question';
   }
 
   public getActionButtonClass(action: RoomAction): string {
-    const entity = this.actionStates[action.entityId];
+    const entity = this.actionStates[action.entityId]();
     const active = entity && action.isActive?.(entity);
     return active
       ? action.activeColor ?? 'text-amber-400'

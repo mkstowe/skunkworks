@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, computed, inject, Input } from '@angular/core';
 import { NgIcon } from '@ng-icons/core';
-import { HassEntity } from 'home-assistant-js-websocket';
 import { delay, Subject } from 'rxjs';
 import { ProgressBarComponent } from '../../../../common/components/progress-bar/progress-bar.component';
 import { HassService } from '../../services/hass.service';
@@ -14,34 +13,25 @@ import { SpeakerDetailComponent } from '../speaker-detail/speaker-detail.compone
   templateUrl: './speaker-card.component.html',
   styleUrl: './speaker-card.component.scss',
 })
-export class SpeakerCardComponent implements OnInit {
-  private readonly hassService = inject(HassService);
+export class SpeakerCardComponent {
+  private readonly hass = inject(HassService);
   private readonly speakerService = inject(SpeakerService);
 
   @Input() entityId!: string;
   @Input() name?: string;
   @Input() icon?: string;
-  public entity?: HassEntity;
-  public volume: number | null = 15;
-  public active = false;
-  public playing = false;
+  public entity = this.hass.entitySignal(this.entityId);
+  public volume = computed(() => {
+    return +(
+      (this.entity()?.attributes['volume_level'] as number) ?? 0
+    ).toFixed(2);
+  });
+  public volumeProgress = computed(() => this.volume() * this.numDots);
+  public active = computed(() => this.hass.isActive(this.entity()));
+  public playing = computed(() => this.entity()?.state === 'playing');
+
   public openDetailSubject$ = new Subject<void>();
   public numDots = 20;
-  public volumeProgress = 0;
-
-  private onStates = ['on', 'idle', 'playing', 'paused'];
-
-  public ngOnInit(): void {
-    this.hassService.entities$.subscribe((res: any) => {
-      this.entity = res[this.entityId];
-      this.volume = +(
-        this.entity?.attributes['volume_level'] as number
-      )?.toFixed(2);
-      this.volumeProgress = this.volume * this.numDots;
-      this.active = this.hassService.isActive(this.entity);
-      this.playing = this.entity?.state === 'playing';
-    });
-  }
 
   public toggleState() {
     this.speakerService

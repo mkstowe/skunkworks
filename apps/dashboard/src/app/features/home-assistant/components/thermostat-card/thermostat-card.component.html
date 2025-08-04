@@ -1,4 +1,4 @@
-@if (entity) {
+@if (entity()) {
 <div class="bg-background flex gap-8 items-center h-full justify-between">
   @if(icon) {
   <div class="bg-dark aspect-square h-full rounded-2xl bg-dark cursor-default">
@@ -15,9 +15,9 @@
       class="info text-lg font-bold w-full flex justify-between items-start px-2 flex-col"
     >
       <div class="name">
-        {{ name || entity.attributes['friendly_name'] || '' }}
+        {{ name || entity()!.attributes['friendly_name'] || '' }}
       </div>
-      <div class="state">{{ mode | titlecase }} - {{ temp }}°</div>
+      <div class="state">{{ mode() | titlecase }} - {{ temp() }}°</div>
     </div>
     <div class="flex items-center gap-4">
       <div class="controls flex gap-4">
@@ -57,6 +57,6 @@
 
 <app-thermostat-detail
   [openModalSubject$]="openDetailSubject$"
-  [entity]="entity"
+  [entity]="entity()!"
 ></app-thermostat-detail>
 }

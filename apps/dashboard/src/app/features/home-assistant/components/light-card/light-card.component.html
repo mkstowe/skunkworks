@@ -1,14 +1,14 @@
-@if (entity) {
+@if (entity()) {
 <div class="bg-background flex gap-8 items-center h-full">
   @if(icon) {
   <button
-    [class.active]="active"
-    [class]="active ? 'bg-light' : 'bg-dark'"
+    [class.active]="active()"
+    [class]="active() ? 'bg-light' : 'bg-dark'"
     class="btn bg-dark w-18 h-18 rounded-2xl border-2 border-light"
     (click)="toggleState()"
   >
     <div
-      [class]="active ? 'text-dark' : 'text-light'"
+      [class]="active() ? 'text-dark' : 'text-light'"
       class="flex justify-center items-center text-4xl w-full h-full"
     >
       <ng-icon [name]="icon"></ng-icon>
@@ -21,13 +21,13 @@
       class="info text-lg font-bold w-full flex justify-between items-center px-2"
     >
       <div class="name">
-        {{ name || entity.attributes['friendly_name'] || '' }}
+        {{ name || entity()!.attributes['friendly_name'] || '' }}
       </div>
       <div class="flex items-center gap-4">
         <div class="brightness m-auto">
           {{
-            brightness && brightness > 0
-              ? valueAsPercentage(brightness) + '%'
+            brightness() && brightness() > 0
+              ? valueAsPercentage(brightness()) + '%'
               : 'Off'
           }}
         </div>
@@ -43,7 +43,7 @@
       </div>
     </div>
     <app-progress-bar
-      [value]="brightnessProgress"
+      [value]="brightnessProgress()"
       [total]="numDots"
       [interactive]="true"
       activeColor="bg-primary"
@@ -57,6 +57,6 @@
 
 <app-light-detail
   [openModalSubject$]="openDetailSubject$"
-  [entity]="entity"
+  [entity]="entity()"
 ></app-light-detail>
 }

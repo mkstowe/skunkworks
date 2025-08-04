@@ -1,7 +1,10 @@
 {
   "tailwindCSS.experimental.configFile": "apps/dashboard/tailwind.config.js",
   "cSpell.words": [
+    "bambu",
+    "gcode",
     "hass",
-    "hvac"
+    "hvac",
+    "titlecase"
   ]
 }

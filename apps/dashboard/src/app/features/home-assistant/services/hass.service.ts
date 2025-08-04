@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, OnDestroy } from '@angular/core';
+import { inject, Injectable, OnDestroy, signal } from '@angular/core';
 import {
   BehaviorSubject,
   distinctUntilChanged,
@@ -25,7 +25,12 @@ export class HassService implements OnDestroy {
   private socket!: WebSocket;
   private reconnectTimeout = 5000;
   private isConnected = false;
-  private entityState$ = new BehaviorSubject<Record<string, any>>({});
+
+  private entitySignals = new Map<
+    string,
+    ReturnType<typeof signal<HassEntity | null>>
+  >();
+  // private entityState$ = new BehaviorSubject<Record<string, any>>({});
   private _entities$ = new BehaviorSubject({});
   private _refresh$ = new BehaviorSubject<null>(null);
   private onStates = [
@@ -62,6 +67,15 @@ export class HassService implements OnDestroy {
       map((entities: any) => entities?.[entityId] ?? null),
       distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
     );
+  }
+
+  public entitySignal(entityId: string) {
+    if (!this.entitySignals.has(entityId)) {
+      const s = signal<HassEntity | null>(null);
+      this.getEntity$(entityId).subscribe(s.set);
+      this.entitySignals.set(entityId, s);
+    }
+    return this.entitySignals.get(entityId)!;
   }
 
   public callService(service: ServiceCall) {

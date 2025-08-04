@@ -11,8 +11,8 @@
     <div class="info w-full flex justify-between items-center">
       <div class="flex items-center gap-4 w-full justify-between">
         <div class="flex flex-col">
-          <p class="text-lg font-bold">{{ details.name }}</p>
-          <p class="text-lg font-bold">{{ details.state | titlecase }}</p>
+          <p class="text-lg font-bold">{{ details()?.name }}</p>
+          <p class="text-lg font-bold">{{ details()?.state | titlecase }}</p>
         </div>
         <div class="detail-button">
           <button
@@ -31,5 +31,5 @@
 
 <app-smart-vac-detail
   [openModalSubject$]="openDetailSubject$"
-  [details]="details"
+  [details]="details()!"
 ></app-smart-vac-detail>

@@ -1,64 +1,86 @@
-import { CommonModule } from '@angular/common';
 import {
   Component,
+  computed,
   ElementRef,
   inject,
   Input,
-  OnChanges,
   OnInit,
-  SimpleChanges,
+  signal,
   ViewChild,
 } from '@angular/core';
 import { RGBA } from 'ngx-color';
 import { Subject } from 'rxjs';
 import { ColorPickerComponent } from '../../../../common/components/color-picker/color-picker.component';
 import { HassEntity } from '../../models/Entity';
-import { LightService } from '../../services/light.service';
+import { HassService } from '../../services/hass.service';
 
 @Component({
   selector: 'app-light-detail',
-  imports: [CommonModule, ColorPickerComponent],
+  imports: [ColorPickerComponent],
   templateUrl: './light-detail.component.html',
-  styleUrl: './light-detail.component.scss',
+  styleUrls: ['./light-detail.component.scss'],
 })
-export class LightDetailComponent implements OnInit, OnChanges {
-  private readonly lightService = inject(LightService);
+export class LightDetailComponent implements OnInit {
+  private readonly hass = inject(HassService);
 
   @Input() openModalSubject$!: Subject<void>;
-  @Input() entity!: HassEntity;
-  public valueChangeSubject$ = new Subject<void>();
-  public brightness = 0;
-  public color!: RGBA;
+  @Input() entity!: HassEntity | null;
 
-  @ViewChild('modal') modal!: ElementRef<HTMLDialogElement>;
+  @ViewChild('modal', { static: true }) modal!: ElementRef<HTMLDialogElement>;
 
-  ngOnInit(): void {
+  public entitySignal = signal<HassEntity | null>(null);
+
+  public color = computed(() => {
+    const c = (this.entitySignal()?.attributes['rgb_color'] as number[]) ?? [
+      255, 255, 255,
+    ];
+    return { r: c[0], g: c[1], b: c[2], a: 255 };
+  });
+
+  ngOnInit() {
+    this.entitySignal.set(this.entity);
+
     this.openModalSubject$.subscribe(() => {
-      this.modal.nativeElement.showModal();
+      this.openModal();
     });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['entity'] && this.entity) {
-      this.brightness = (this.entity?.attributes['brightness'] as number) ?? 0;
-
-      const c = (this.entity?.attributes['rgb_color'] as number[]) ?? [
-        255, 255, 255,
-      ];
-      this.color = { r: c[0], g: c[1], b: c[2], a: 255 };
-    }
+  openModal() {
+    this.modal.nativeElement.showModal();
   }
 
-  public onColorChange(e: RGBA) {
-    this.color = e;
+  closeModal() {
+    this.modal.nativeElement.close();
   }
 
-  public applyColor() {
-    this.lightService
-      .changeColor(this.entity.entity_id, this.color)
-      .subscribe();
+  onColorChange(newColor: RGBA) {
+    // this.color.set(newColor)
   }
 
-  // TODO: Effects
-  // TODO: Transition time
+  private _pendingColor: string | null = null;
+
+  applyColor() {
+    const currentEntity = this.entitySignal();
+    if (!currentEntity || !this._pendingColor) return;
+
+    // Convert "rgb(r,g,b)" to [r,g,b]
+    const rgbMatch = this._pendingColor.match(/\d+/g);
+    const rgb = rgbMatch
+      ? rgbMatch.map((n) => parseInt(n, 10))
+      : [255, 255, 255];
+
+    this.hass
+      .callService({
+        domain: 'light',
+        service: 'turn_on',
+        target: { entity_id: currentEntity.entity_id },
+        service_data: {
+          rgb_color: rgb,
+        },
+      })
+      .subscribe(() => {
+        this._pendingColor = null;
+        this.closeModal();
+      });
+  }
 }
