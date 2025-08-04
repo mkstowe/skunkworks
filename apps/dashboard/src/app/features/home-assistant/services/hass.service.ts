@@ -28,7 +28,14 @@ export class HassService implements OnDestroy {
   private entityState$ = new BehaviorSubject<Record<string, any>>({});
   private _entities$ = new BehaviorSubject({});
   private _refresh$ = new BehaviorSubject<null>(null);
-  private onStates = ['on', 'playing', 'paused', 'idle', 'Detected'];
+  private onStates = [
+    'on',
+    'playing',
+    'paused',
+    'idle',
+    'Detected',
+    'unlocked',
+  ];
 
   constructor() {
     this.connectWebsocket();

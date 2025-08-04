@@ -72,7 +72,9 @@ export class OverviewComponent implements OnInit {
         temperatureEntityId: '',
         humidityEntityId: '',
         occupiedEntityId: '',
-        actions: [],
+        actions: [
+          this.roomService.createLockToggleAction('lock.side_door_lock'),
+        ],
       },
       {
         title: 'Dining Room',
@@ -93,6 +95,16 @@ export class OverviewComponent implements OnInit {
         humidityEntityId: '',
         occupiedEntityId: '',
         actions: [],
+      },
+      {
+        title: 'Garage',
+        roomName: 'garage',
+        icon: 'car',
+        color: 'bg-palette-8 text-dark',
+        temperatureEntityId: '',
+        humidityEntityId: '',
+        occupiedEntityId: '',
+        actions: [this.roomService.createLightToggleAction('light.garage')],
       },
     ];
   }

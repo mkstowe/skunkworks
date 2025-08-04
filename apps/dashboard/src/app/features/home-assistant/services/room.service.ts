@@ -56,4 +56,33 @@ export class RoomService {
       inactiveColor: 'hover:border-palette-1 hover:text-palette-1',
     };
   }
+
+  public createLockToggleAction(entityId: string): RoomAction {
+    return {
+      getIcon: (e: HassEntity) => {
+        if (!this.hass.isActive(e)) {
+          return 'lock';
+        } else {
+          return 'lockOpen';
+        }
+      },
+      entityId,
+      getService: (e: HassEntity) => {
+        return this.hass.isActive(e)
+          ? {
+              domain: 'lock',
+              service: 'lock',
+              target: { entity_id: entityId },
+            }
+          : {
+              domain: 'lock',
+              service: 'unlock',
+              target: { entity_id: entityId },
+            };
+      },
+      isActive: (e: HassEntity) => this.hass.isActive(e),
+      activeColor: 'bg-palette-1 text-dark hover:opacity-85',
+      inactiveColor: 'hover:border-palette-1 hover:text-palette-1',
+    };
+  }
 }

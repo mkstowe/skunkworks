@@ -8,11 +8,14 @@ import { phosphorLightbulbFill } from '@ng-icons/phosphor-icons/fill';
 import {
   phosphorBed,
   phosphorBroom,
+  phosphorCar,
   phosphorCouch,
   phosphorDesktopTower,
   phosphorForkKnife,
   phosphorKnife,
   phosphorLightbulb,
+  phosphorLock,
+  phosphorLockOpen,
   phosphorMinus,
   phosphorPause,
   phosphorPencilRuler,
@@ -57,4 +60,7 @@ export const appIconProviders = provideIcons({
   question: phosphorQuestion,
   vectors: phosphorVectorThree,
   broom: phosphorBroom,
+  car: phosphorCar,
+  lock: phosphorLock,
+  lockOpen: phosphorLockOpen,
 });
