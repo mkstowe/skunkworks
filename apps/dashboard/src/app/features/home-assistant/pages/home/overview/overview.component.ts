@@ -27,7 +27,7 @@ export class OverviewComponent implements OnInit {
         actions: [
           this.roomService.createLightToggleAction('light.office'),
           this.roomService.createMediaToggleAction(
-            'media_player.office_speaker',
+            'media_player.office_speaker_2',
             'https://open.spotify.com/playlist/4vNldb5p8tQ9RmX7XSaTIM'
           ),
         ],
@@ -39,9 +39,13 @@ export class OverviewComponent implements OnInit {
         color: 'bg-palette-2 text-dark',
         temperatureEntityId: 'climate.thermostat',
         humidityEntityId: 'climate.thermostat',
-        occupiedEntityId: '',
+        occupiedEntityId: 'binary_sensor.living_room_presence_sensor_occupancy',
         actions: [
           this.roomService.createLightToggleAction('light.living_room'),
+            this.roomService.createMediaToggleAction(
+            'media_player.living_room_speaker_2',
+            'https://open.spotify.com/playlist/4vNldb5p8tQ9RmX7XSaTIM'
+          ),
         ],
       },
       {
@@ -52,7 +56,12 @@ export class OverviewComponent implements OnInit {
         temperatureEntityId: 'sensor.bedroom_temperature',
         humidityEntityId: '',
         occupiedEntityId: 'binary_sensor.bedroom_occupancy',
-        actions: [this.roomService.createLightToggleAction('light.bedroom')],
+        actions: [this.roomService.createLightToggleAction('light.bedroom'),
+            this.roomService.createMediaToggleAction(
+            'media_player.bedroom_speaker_2',
+            'https://open.spotify.com/playlist/4vNldb5p8tQ9RmX7XSaTIM'
+          ),
+        ],
       },
       {
         title: 'Workshop',
@@ -74,6 +83,10 @@ export class OverviewComponent implements OnInit {
         occupiedEntityId: '',
         actions: [
           this.roomService.createLockToggleAction('lock.side_door_lock'),
+            this.roomService.createMediaToggleAction(
+            'media_player.kitchen_display',
+            'https://open.spotify.com/playlist/4vNldb5p8tQ9RmX7XSaTIM'
+          ),
         ],
       },
       {
@@ -83,7 +96,7 @@ export class OverviewComponent implements OnInit {
         color: 'bg-palette-6 text-dark',
         temperatureEntityId: 'climate.thermostat',
         humidityEntityId: 'climate.thermostat',
-        occupiedEntityId: 'binary_sensor.dining_room_occupied',
+        occupiedEntityId: 'binary_sensor.thermostat_occupancy',
         actions: [],
       },
       {
@@ -94,7 +107,10 @@ export class OverviewComponent implements OnInit {
         temperatureEntityId: '',
         humidityEntityId: '',
         occupiedEntityId: '',
-        actions: [],
+        actions: [  this.roomService.createMediaToggleAction(
+            'media_player.bathroom_speaker_2',
+            'https://open.spotify.com/playlist/4vNldb5p8tQ9RmX7XSaTIM'
+          ),],
       },
       {
         title: 'Garage',

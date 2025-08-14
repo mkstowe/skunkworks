@@ -45,9 +45,9 @@ export class RoomService {
               target: { entity_id: entityId },
             }
           : {
-              domain: 'music_assistant',
+              domain: 'media_player',
               service: 'play_media',
-              service_data: { media_id: playlistUrl, media_type: 'playlist' },
+              service_data: { media_content_id:  playlistUrl, media_content_type: 'playlist' },
               target: { entity_id: entityId },
             };
       },
